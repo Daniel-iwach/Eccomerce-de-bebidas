@@ -61,6 +61,8 @@ public class SecurityConfig {
                     .requestMatchers(
                             "http://localhost:8080/**",
                             "/product/**",
+                            "/cart/**",
+                            "/item-cart/**",
                             "/auth/**",
                             "/recuperar-contraseña/**",
                             "/validation/**",
