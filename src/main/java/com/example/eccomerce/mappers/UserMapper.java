@@ -4,6 +4,7 @@ import com.example.eccomerce.model.UserEntity;
 import com.example.eccomerce.model.dtos.request.RequestUserRegisterDto;
 import com.example.eccomerce.model.dtos.response.ResponseUserDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 

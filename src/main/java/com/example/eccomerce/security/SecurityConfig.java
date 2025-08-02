@@ -59,8 +59,9 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
-                            "/register",
-                            "/log-in",
+                            "http://localhost:8080/**",
+                            "/product/**",
+                            "/auth/**",
                             "/recuperar-contraseña/**",
                             "/validation/**",
                             "/swagger-ui/**",

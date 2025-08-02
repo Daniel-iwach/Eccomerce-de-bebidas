@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-
 public class UserController {
     private final UserServiceImpl userService;
 
@@ -22,10 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<ResponseUserDto> create(@RequestBody @Valid RequestUserRegisterDto user) {
-        return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
-    }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<ResponseUserDto>> getAll() {
