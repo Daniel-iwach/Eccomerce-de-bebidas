@@ -7,6 +7,7 @@ import com.example.eccomerce.model.dtos.response.ResponseUserDto;
 import com.example.eccomerce.model.enums.ERole;
 import com.example.eccomerce.model.enums.EUserState;
 import com.example.eccomerce.repository.UserRepository;
+import com.example.eccomerce.service.interfaces.ICartService;
 import com.example.eccomerce.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,8 @@ import java.util.Set;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
+
+    private final ICartService cartService;
 
     private final UserMapper userMapper;
 
@@ -39,6 +42,7 @@ public class UserServiceImpl implements IUserService {
         userEntity.setRoleList(roleSet);
         
         userEntity=userRepository.save(userEntity);
+        cartService.createCart(userEntity.getId());
         return userMapper.userEntityToUserDto(userEntity);
     }
 

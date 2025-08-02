@@ -1,0 +1,11 @@
+package com.example.eccomerce.service.interfaces;
+
+import com.example.eccomerce.model.dtos.response.ResponseCartDto;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface ICartService {
+    ResponseCartDto createCart (String userId);
+    ResponseCartDto getCartByUserId (String userId);
+
+}
