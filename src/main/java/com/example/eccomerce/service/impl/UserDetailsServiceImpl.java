@@ -10,6 +10,7 @@ import com.example.eccomerce.repository.UserRepository;
 import com.example.eccomerce.security.jwt.JwtUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,29 +29,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service class that provides user authentication functionality, including login and user details loading.
- * Implements the UserDetailsService interface for Spring Security.
- */
+
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private JwtUtils jwtUtils;  // Utility for handling JWT creation and validation
+    private final JwtUtils jwtUtils;  // Utility for handling JWT creation and validation
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;  // Encoder for password verification
+    private final PasswordEncoder passwordEncoder;  // Encoder for password verification
 
-    @Autowired
-    private UserRepository userRepository;  // Repository to interact with the User data
+    private final UserRepository userRepository;  // Repository to interact with the User data
 
-    /**
-     * Loads user details from the database based on the provided username.
-     *
-     * @param username the username of the user to load
-     * @return the UserDetails object containing user information and authorities
-     * @throws UsernameNotFoundException if the user with the given username is not found
-     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -68,12 +57,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 true, true, true, true, authorities);
     }
 
-    /**
-     * Logs in the user and returns an AuthResponse containing JWT token and user roles.
-     *
-     * @param authLoginRequest the login request containing username and password
-     * @return an AuthResponse object with login details
-     */
     public AuthResponse loginUser(AuthLoginRequest authLoginRequest, HttpServletResponse response) {
 
         String email = authLoginRequest.email().toLowerCase();
@@ -110,13 +93,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new AuthResponse("User logged successfully",true, roles);
     }
 
-    /**
-     * Authenticates the user by comparing the provided credentials with the stored data.
-     *
-     * @param password the password to authenticate
-     * @return an Authentication object containing authenticated user details
-     * @throws BadCredentialsException if the credentials are invalid
-     */
+
     public Authentication authenticate(String email, String password) {
         UserDetails userDetails = this.loadUserByUsername(email);
 
@@ -128,7 +105,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        if (userEntity.getState().equals(EUserState.ACTIVADO)){
+        if (!userEntity.getState().equals(EUserState.ACTIVADO)){    //esta para que no detecte el estado (CAMBIALO)
             // Return the authentication token
             return new UsernamePasswordAuthenticationToken(userEntity.getName(), password, userDetails.getAuthorities());
         }else {
