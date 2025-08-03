@@ -11,5 +11,7 @@ public interface IProductService {
 
     ResponseProductDto create(RequestProductCreateDto user);
 
+    ResponseProductDto findById(String produdctId);
+
     List<ResponseProductDto> listAll();
 }

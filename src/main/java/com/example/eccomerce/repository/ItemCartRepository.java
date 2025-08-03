@@ -4,6 +4,11 @@ import com.example.eccomerce.model.ItemCart;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ItemCartRepository extends MongoRepository<ItemCart,String> {
+    Optional<List<ItemCart>>findByCartId(String cartId);
+    Optional<ItemCart>findByCartIdAndProductId(String cartId, String productId);
 }

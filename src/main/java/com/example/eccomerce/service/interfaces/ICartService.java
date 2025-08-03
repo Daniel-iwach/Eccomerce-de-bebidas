@@ -7,5 +7,7 @@ import org.springframework.stereotype.Service;
 public interface ICartService {
     ResponseCartDto createCart (String userId);
     ResponseCartDto getCartByUserId (String userId);
+    ResponseCartDto updateTotalPrice(String cartId, int total);
+    ResponseCartDto updateItemList(String cartId, String itemId, boolean toDelete);
 
 }
