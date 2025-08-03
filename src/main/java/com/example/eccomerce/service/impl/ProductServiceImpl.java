@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,13 @@ public class ProductServiceImpl implements IProductService {
 
         product=productRepository.save(product);
         System.out.println(product);
+        return productMapper.ProductToProductDto(product);
+    }
+
+    @Override
+    public ResponseProductDto findById(String produdctId) {
+        Product product= productRepository.findById(produdctId)
+                .orElseThrow(()-> new NoSuchElementException("product by id: "+ produdctId +" not found"));
         return productMapper.ProductToProductDto(product);
     }
 

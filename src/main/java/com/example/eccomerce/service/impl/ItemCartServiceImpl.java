@@ -4,20 +4,101 @@ import com.example.eccomerce.mappers.ItemCartMapper;
 import com.example.eccomerce.model.ItemCart;
 import com.example.eccomerce.model.dtos.request.RequestCreateItemCartDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
+import com.example.eccomerce.model.dtos.response.ResponseProductDto;
 import com.example.eccomerce.repository.ItemCartRepository;
+import com.example.eccomerce.service.interfaces.ICartService;
 import com.example.eccomerce.service.interfaces.IItemCartService;
+import com.example.eccomerce.service.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ItemCartServiceImpl implements IItemCartService {
-    private final ItemCartRepository cartRepository;
+    private final ItemCartRepository itemCartRepository;
+    private final IProductService productService;
+    private final ICartService cartService;
     private final ItemCartMapper itemCartMapper;
 
     @Override
-    public ResponseItemCartDto createItemCart(RequestCreateItemCartDto createItemCartDto) {
-        ItemCart itemCart=itemCartMapper.createItemCartDtoToItemCart(createItemCartDto);
-        
+    public ResponseItemCartDto addItemCart(RequestCreateItemCartDto createItemCartDto) {
+        ItemCart itemCart;
+        Optional<ItemCart>optionalItemCart;
+        optionalItemCart=getItemByCartIdAndProductId(createItemCartDto.cartId(),createItemCartDto.productId());
+
+        //PREGUNTA SI EXISTE YA UN ITEM CON ESE PRODUCTO Y CARRITO
+        if (optionalItemCart.isPresent()){
+            itemCart=optionalItemCart.get();    // OBTIENE EL ITEM EXISTENTE
+            itemCart.setQuantity(itemCart.getQuantity()+createItemCartDto.quantity());  //ACTUALIZA LA CANTIDAD
+        }else {
+            itemCart=itemCartMapper.createItemCartDtoToItemCart(createItemCartDto); //CREA EL ITEM CON EL REQUEST
+        }
+
+        //CALCULA SUBTOTAL Y CREA/ACTUALIZA EL ITEM
+        itemCart=calculateAndSetSubTotal(itemCart);
+        itemCart=itemCartRepository.save(itemCart);
+
+        //ACTUALIZA EL TOTAL DEL CARRITO
+        updateTotalCart(itemCart.getCartId());
+        //ACTUALIZA LA LISTA DEL CARRITO SI TODAVIA NO EXISTE
+        if (!optionalItemCart.isPresent()){
+            updateListOfCart(itemCart.getCartId(), itemCart.getId(), false);
+        }
+
+        //RETORNA
+        return itemCartMapper.ItemCartToItemCartDto(itemCart);
     }
+
+    @Override
+    public List<ResponseItemCartDto> getAll() {
+        List<ItemCart> itemCartList=itemCartRepository.findAll();
+        return itemCartMapper.ItemCartListToItemCartDtoList(itemCartList);
+    }
+
+    @Override
+    public List<ResponseItemCartDto> getByCartId(String cartId) {
+        List<ItemCart>itemCartList=itemCartRepository.findByCartId(cartId)
+                .orElseThrow(()->new NoSuchElementException("Items by cartId: "+ cartId +" not found"));
+        return itemCartMapper.ItemCartListToItemCartDtoList(itemCartList);
+    }
+
+    @Override
+    public String deleteItemCart(String itemId) {
+        Optional<ItemCart>optionalItemCart=itemCartRepository.findById(itemId);
+        if (optionalItemCart.isPresent()){
+            ItemCart itemCart=optionalItemCart.get();
+            updateListOfCart(itemCart.getCartId(),itemCart.getId(),true);
+            itemCartRepository.deleteById(itemId);
+            updateTotalCart(itemCart.getCartId());
+            return "Producto eliminado con exito";
+        }else {
+            throw new NoSuchElementException("item with id: "+ itemId +" not found");
+        }
+    }
+
+    private Optional<ItemCart> getItemByCartIdAndProductId(String cartId, String productId){
+        return itemCartRepository.findByCartIdAndProductId(cartId, productId);
+    }
+
+    private ItemCart calculateAndSetSubTotal(ItemCart itemCart){
+        ResponseProductDto productDto=productService.findById(itemCart.getProductId());
+        itemCart.setSubTotal(productDto.price()*itemCart.getQuantity());
+        return itemCart;
+    }
+
+    private void updateTotalCart(String cartId){
+        List<ResponseItemCartDto>itemCartDtoList=getByCartId(cartId);
+        int total=itemCartDtoList.stream().mapToInt(ResponseItemCartDto::subTotal).sum();
+        cartService.updateTotalPrice(cartId, total);
+    }
+
+    //AÑADE O BORRA DE LA LISTA
+    private void updateListOfCart(String cartId,String itemId, boolean toDelete){
+        cartService.updateItemList(cartId, itemId, toDelete);
+    }
+
 }

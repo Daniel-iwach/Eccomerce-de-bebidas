@@ -5,10 +5,12 @@ import com.example.eccomerce.model.Cart;
 import com.example.eccomerce.model.dtos.response.ResponseCartDto;
 import com.example.eccomerce.repository.CartRepository;
 import com.example.eccomerce.service.interfaces.ICartService;
+import com.example.eccomerce.service.interfaces.IItemCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -28,6 +30,30 @@ public class CartServiceImpl implements ICartService {
         Cart cart= cartRepository.findByUserId(userId)
                 .orElseThrow(()->new NoSuchElementException("Cart with userId: "+userId+" not found"));
         System.out.println(cart);
+        return cartMapper.cartToResponseCartDto(cart);
+    }
+
+    @Override
+    public ResponseCartDto updateTotalPrice(String cartId, int total) {
+        Cart cart=cartRepository.findById(cartId)
+                .orElseThrow(()->new NoSuchElementException("Cart with Id: "+cartId+" not found"));
+        cart.setTotal(total);
+        cart=cartRepository.save(cart);
+        return cartMapper.cartToResponseCartDto(cart);
+    }
+
+    @Override
+    public ResponseCartDto updateItemList(String cartId, String itemId, boolean toDelete) {
+        Cart cart=cartRepository.findById(cartId)
+                .orElseThrow(()->new NoSuchElementException("Cart with Id: "+cartId+" not found"));
+        List<String> itemList= cart.getItemCartList();
+        if (toDelete){
+            itemList.add(itemId);
+        }else {
+            itemList.remove(itemId);
+        }
+        cart.setItemCartList(itemList);
+        cart=cartRepository.save(cart);
         return cartMapper.cartToResponseCartDto(cart);
     }
 }
