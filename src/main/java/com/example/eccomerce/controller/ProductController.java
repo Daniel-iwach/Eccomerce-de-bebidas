@@ -2,13 +2,16 @@ package com.example.eccomerce.controller;
 
 import com.example.eccomerce.model.dtos.request.RequestProductCreateDto;
 import com.example.eccomerce.model.dtos.response.ResponseProductDto;
+import com.example.eccomerce.model.enums.ECategory;
 import com.example.eccomerce.service.interfaces.IProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,8 +26,26 @@ public class ProductController {
         return new ResponseEntity<>(productService.create(createProductDto), HttpStatus.OK);
     }
 
+    @PostMapping("/completo")
+    public ResponseEntity<?> crearProducto(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("brand") String brand,
+            @RequestParam("price") int price,
+            @RequestParam("category") ECategory category,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        return new ResponseEntity<>(productService.crearProducto(name, description, brand, price, category, file),HttpStatus.OK);
+
+    }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<ResponseProductDto>>getAll(){
         return new ResponseEntity<>(productService.listAll(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getById/{productId}")
+    public ResponseEntity<ResponseProductDto>getById(@PathVariable String productId){
+        return new ResponseEntity<>(productService.findById(productId),HttpStatus.OK);
     }
 }

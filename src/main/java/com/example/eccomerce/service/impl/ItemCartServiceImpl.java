@@ -2,7 +2,8 @@ package com.example.eccomerce.service.impl;
 
 import com.example.eccomerce.mappers.ItemCartMapper;
 import com.example.eccomerce.model.ItemCart;
-import com.example.eccomerce.model.dtos.request.RequestCreateItemCartDto;
+import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
+import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
 import com.example.eccomerce.model.dtos.response.ResponseProductDto;
 import com.example.eccomerce.repository.ItemCartRepository;
@@ -25,17 +26,17 @@ public class ItemCartServiceImpl implements IItemCartService {
     private final ItemCartMapper itemCartMapper;
 
     @Override
-    public ResponseItemCartDto addItemCart(RequestCreateItemCartDto createItemCartDto) {
+    public ResponseItemCartDto addItemCart(RequestAddItemCartDto ItemCartDto) {
         ItemCart itemCart;
         Optional<ItemCart>optionalItemCart;
-        optionalItemCart=getItemByCartIdAndProductId(createItemCartDto.cartId(),createItemCartDto.productId());
+        optionalItemCart=getItemByCartIdAndProductId(ItemCartDto.cartId(),ItemCartDto.productId());
 
         //PREGUNTA SI EXISTE YA UN ITEM CON ESE PRODUCTO Y CARRITO
         if (optionalItemCart.isPresent()){
             itemCart=optionalItemCart.get();    // OBTIENE EL ITEM EXISTENTE
-            itemCart.setQuantity(itemCart.getQuantity()+createItemCartDto.quantity());  //ACTUALIZA LA CANTIDAD
+            itemCart.setQuantity(itemCart.getQuantity()+ItemCartDto.quantity());  //ACTUALIZA LA CANTIDAD
         }else {
-            itemCart=itemCartMapper.createItemCartDtoToItemCart(createItemCartDto); //CREA EL ITEM CON EL REQUEST
+            itemCart=itemCartMapper.createItemCartDtoToItemCart(ItemCartDto); //CREA EL ITEM CON EL REQUEST
         }
 
         //CALCULA SUBTOTAL Y CREA/ACTUALIZA EL ITEM
@@ -49,7 +50,29 @@ public class ItemCartServiceImpl implements IItemCartService {
             updateListOfCart(itemCart.getCartId(), itemCart.getId(), false);
         }
 
-        //RETORNA
+        //RETORNA EL ITEM MAPEADO A DTO
+        return itemCartMapper.ItemCartToItemCartDto(itemCart);
+    }
+
+    @Override
+    public ResponseItemCartDto updateItemQuantity(RequestUpdateItemQuantityDto incrItemCartDto, boolean decrement) {
+        ItemCart itemCart=itemCartRepository.findById(incrItemCartDto.itemCartId())
+                .orElseThrow(()->new NoSuchElementException
+                        ("item cart with id: " + incrItemCartDto.itemCartId() + " not found"));
+
+        if (decrement){
+            itemCart.setQuantity(itemCart.getQuantity()-1);
+        }else {
+            itemCart.setQuantity((itemCart.getQuantity())+1);
+        }
+
+        //CALCULA SUBTOTAL Y CREA/ACTUALIZA EL ITEM
+        itemCart=calculateAndSetSubTotal(itemCart);
+        itemCart=itemCartRepository.save(itemCart);
+        //ACTUALIZA EL TOTAL DEL CARRITO
+        updateTotalCart(itemCart.getCartId());
+
+        //RETORNA EL ITEM MAPEADO A DTO
         return itemCartMapper.ItemCartToItemCartDto(itemCart);
     }
 

@@ -1,9 +1,8 @@
 package com.example.eccomerce.controller;
 
-import com.example.eccomerce.model.dtos.request.RequestCreateItemCartDto;
-import com.example.eccomerce.model.dtos.request.RequestProductCreateDto;
+import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
+import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
-import com.example.eccomerce.model.dtos.response.ResponseProductDto;
 import com.example.eccomerce.service.interfaces.IItemCartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +20,35 @@ public class ItemCarController {
 
     //METODO PARA EL BOTON DE AÑADIR CANTIDADES
     @PostMapping("/add-item")
-    public ResponseEntity<ResponseItemCartDto> addItemCart(@RequestBody @Valid RequestCreateItemCartDto createItemCartDto) {
+    public ResponseEntity<ResponseItemCartDto> addItemCart(@RequestBody @Valid RequestAddItemCartDto createItemCartDto) {
         return new ResponseEntity<>(itemCartService.addItemCart(createItemCartDto), HttpStatus.OK);
     }
 
+    //INCREMENTA LA CANTIDAD DEL ITEM
+    @PostMapping("/inc-item")
+    public ResponseEntity<ResponseItemCartDto> incrementQuantity(@RequestBody @Valid RequestUpdateItemQuantityDto updateItemQuantityDto) {
+        return new ResponseEntity<>(itemCartService.updateItemQuantity(updateItemQuantityDto,false), HttpStatus.OK);
+    }
+
+    //DECREMENTA LA CANTIDAD DEL ITEM
+    @PostMapping("/dec-item")
+    public ResponseEntity<ResponseItemCartDto> decrementQuantity(@RequestBody @Valid RequestUpdateItemQuantityDto updateItemQuantityDto) {
+        return new ResponseEntity<>(itemCartService.updateItemQuantity(updateItemQuantityDto,true), HttpStatus.OK);
+    }
+
+    //LISTA TODOS LOS ITEM
     @GetMapping("/listAll")
     public ResponseEntity<List<ResponseItemCartDto>>getAll(){
         return new ResponseEntity<>(itemCartService.getAll(),HttpStatus.OK);
     }
 
+    //LISTA ITEMS POR CARRITO
     @GetMapping("/list-by-cart-id/{cartId}")
     public ResponseEntity<List<ResponseItemCartDto>>getByCartId(@PathVariable String cartId){
         return new ResponseEntity<>(itemCartService.getByCartId(cartId),HttpStatus.OK);
     }
 
+    //ELIMINA UN ITEM
     @DeleteMapping("/delete/{itemId}")
     public ResponseEntity<String>deleteItem(@PathVariable String itemId){
         return new ResponseEntity<>(itemCartService.deleteItemCart(itemId),HttpStatus.OK);
