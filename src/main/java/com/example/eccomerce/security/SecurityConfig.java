@@ -37,7 +37,7 @@ public class SecurityConfig {
             .cors(cors -> cors
                     .configurationSource(request -> {
                         var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                        corsConfig.setAllowedOrigins(List.of("http://127.0.0.1:5500")); // origen del frontend
+                        corsConfig.setAllowedOrigins(List.of("http://127.0.0.1:5501")); // origen del frontend
                         corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                         corsConfig.setAllowedHeaders(List.of("*"));
                         corsConfig.setAllowCredentials(true);
@@ -47,7 +47,8 @@ public class SecurityConfig {
             .headers(headers -> headers
                     // Content Security Policy (CSP)
                     .contentSecurityPolicy(csp -> csp
-                            .policyDirectives("default-src 'self'; script-src 'self';")
+//                            .policyDirectives("default-src 'self'; script-src 'self';")
+                              .policyDirectives("default-src 'self'; img-src 'self' data: ")
                     )
                     // Protección contra clickjacking
                     .frameOptions(frame -> frame
@@ -64,6 +65,7 @@ public class SecurityConfig {
                             "/cart/**",
                             "/item-cart/**",
                             "/auth/**",
+                            "/uploads/**",
                             "/recuperar-contraseña/**",
                             "/validation/**",
                             "/swagger-ui/**",
@@ -84,10 +86,10 @@ public class SecurityConfig {
                         .invalidateHttpSession(true);
             })
 
-            .formLogin(form -> form
-                    .loginPage("/html/login-register.html")
-                    .loginProcessingUrl("/html/login-register.html")
-            )
+//            .formLogin(form -> form
+//                    .loginPage("/html/login-register.html")
+//                    .loginProcessingUrl("/html/login-register.html")
+//            )
             .sessionManagement(sesison->sesison.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
             .build();

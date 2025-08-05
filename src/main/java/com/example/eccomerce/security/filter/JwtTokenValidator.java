@@ -68,12 +68,14 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
     private boolean shouldSkipFilter(String requestPath) {
         return requestPath.startsWith("/oauth2/") ||
-                requestPath.startsWith("/html/login-register.html") ||
+                requestPath.startsWith("/html/") ||
+                //requestPath.startsWith("/html/login-register.html") ||
                 requestPath.equals("/") ||
                 requestPath.startsWith("/css/") ||
                 requestPath.startsWith("/js/") ||
                 requestPath.startsWith("/images/") ||
-                requestPath.startsWith("/static/");
+                requestPath.startsWith("/static/") ||
+                requestPath.startsWith("/uploads/");
     }
 
     private String getJwtFromCookies(HttpServletRequest request) {
