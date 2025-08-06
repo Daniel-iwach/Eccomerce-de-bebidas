@@ -30,44 +30,29 @@ public class ProductServiceImpl implements IProductService {
     private final ProductMapper productMapper;
 
     @Override
-    public ResponseProductDto crearProducto(String name, String description, String brand, int price, ECategory category, MultipartFile file) throws IOException {
-        // Guardar la imagen
-        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+    public ResponseProductDto createProduct(String name, String description, String brand, int price, ECategory category, MultipartFile file) throws IOException {
+        //GUARDA LA FOTO Y OBTIENE LA URL
+        String imageUrl = savePicture(file);
 
-        // Ruta física fuera del classpath
-        Path uploadDir = Paths.get("uploads/");
-        Path path = uploadDir.resolve(filename);
-
-        // Crear carpeta si no existe
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectories(uploadDir);
-        }
-
-        // Guardar el archivo
-        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-        // Opcional: guardar la ruta o nombre en la DB
-        System.out.println("Archivo guardado en: " + path.toAbsolutePath());
-        System.out.println("path: " + path);
-        // Generar URL accesible desde navegador
-        String imageUrl = "/uploads/" + filename.replace("\\", "/");
-
+        //CREA EL PRODUCTO Y LO GUARDA
         Product product= new Product(null, name, description, brand, price, 0, imageUrl ,category,EProductState.DESACTIVADO );
         product=productRepository.save(product);
         System.out.println(product);
+
+        //RETORNA
         return productMapper.ProductToProductDto(product);
     }
 
-    public ResponseProductDto create(RequestProductCreateDto productCreateDto){
-        Product product=productMapper.ProductCreateDtoToProduct(productCreateDto);
-
-        product.setStock(0);
-        product.setState(EProductState.DESACTIVADO);
-
-        product=productRepository.save(product);
-        System.out.println(product);
-        return productMapper.ProductToProductDto(product);
-    }
+//    public ResponseProductDto create(RequestProductCreateDto productCreateDto){
+//        Product product=productMapper.ProductCreateDtoToProduct(productCreateDto);
+//
+//        product.setStock(0);
+//        product.setState(EProductState.DESACTIVADO);
+//
+//        product=productRepository.save(product);
+//        System.out.println(product);
+//        return productMapper.ProductToProductDto(product);
+//    }
 
     @Override
     public ResponseProductDto findById(String produdctId) {
@@ -80,5 +65,25 @@ public class ProductServiceImpl implements IProductService {
     public List<ResponseProductDto> listAll(){
         List<Product>productList=productRepository.findAll();
         return  productMapper.ProductListToProductDtoList(productList);
+    }
+
+    private String savePicture(MultipartFile file) throws IOException{
+        // Guardar la imagen
+        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+
+        // Ruta física fuera del classpath
+        Path uploadDir = Paths.get("uploads/");
+        Path path = uploadDir.resolve(filename);
+
+        // Crear carpeta si no existe
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+        // Guardar el archivo
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+        // Generar URL accesible desde navegador
+        String imageUrl = "/uploads/" + filename.replace("\\", "/");
+        return imageUrl;
     }
 }

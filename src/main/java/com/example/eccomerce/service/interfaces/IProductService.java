@@ -11,10 +11,10 @@ import java.util.List;
 
 @Service
 public interface IProductService {
-    ResponseProductDto crearProducto(String name, String description, String brand,
+    ResponseProductDto createProduct(String name, String description, String brand,
                                      int price, ECategory category, MultipartFile file) throws IOException;
 
-    ResponseProductDto create(RequestProductCreateDto user);
+    //ResponseProductDto create(RequestProductCreateDto user);
 
     ResponseProductDto findById(String produdctId);
 

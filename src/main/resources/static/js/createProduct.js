@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append("price", priceInput.value);
             formData.append("category", categoryInput.value);
             formData.append("file", fileInput.files[0]);
-            const response = await fetch("http://localhost:8080/product/completo", {
+            const response = await fetch("http://localhost:8080/product/create", {
                 method: "POST",
                 body: formData,
             });

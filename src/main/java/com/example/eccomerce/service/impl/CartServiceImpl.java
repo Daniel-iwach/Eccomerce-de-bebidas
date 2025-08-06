@@ -51,7 +51,7 @@ public class CartServiceImpl implements ICartService {
         Cart cart=cartRepository.findById(cartId)
                 .orElseThrow(()->new NoSuchElementException("Cart with Id: "+cartId+" not found"));
         List<String> itemList= cart.getItemCartList();
-        if (toDelete){
+        if (!toDelete){
             itemList.add(itemId);
         }else {
             itemList.remove(itemId);

@@ -21,12 +21,12 @@ public class ProductController {
 
     private final IProductService productService;
 
-    @PostMapping("/create")
-    public ResponseEntity<ResponseProductDto> create(@RequestBody @Valid RequestProductCreateDto createProductDto) {
-        return new ResponseEntity<>(productService.create(createProductDto), HttpStatus.OK);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<ResponseProductDto> create(@RequestBody @Valid RequestProductCreateDto createProductDto) {
+//        return new ResponseEntity<>(productService.create(createProductDto), HttpStatus.OK);
+//    }
 
-    @PostMapping("/completo")
+    @PostMapping("/create")
     public ResponseEntity<?> crearProducto(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
@@ -35,7 +35,7 @@ public class ProductController {
             @RequestParam("category") ECategory category,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        return new ResponseEntity<>(productService.crearProducto(name, description, brand, price, category, file),HttpStatus.OK);
+        return new ResponseEntity<>(productService.createProduct(name, description, brand, price, category, file),HttpStatus.OK);
 
     }
 
