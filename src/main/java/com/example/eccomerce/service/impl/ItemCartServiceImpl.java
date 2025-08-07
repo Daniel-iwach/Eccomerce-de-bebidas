@@ -90,6 +90,13 @@ public class ItemCartServiceImpl implements IItemCartService {
     }
 
     @Override
+    public Integer getTotalItemsByCartId(String cartId) {
+        return itemCartRepository.sumQuantityByCartId(cartId)
+                .map(ItemCartRepository.TotalQuantityResult::getTotalQuantity)
+                .orElse(0);
+    }
+
+    @Override
     public String deleteItemCart(String itemId) {
         Optional<ItemCart>optionalItemCart=itemCartRepository.findById(itemId);
         if (optionalItemCart.isPresent()){
