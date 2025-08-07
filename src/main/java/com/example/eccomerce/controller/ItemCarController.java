@@ -48,6 +48,12 @@ public class ItemCarController {
         return new ResponseEntity<>(itemCartService.getByCartId(cartId),HttpStatus.OK);
     }
 
+    //OBTIENE EL TOTTAL DE ITEMS POR CARRITO
+    @GetMapping("/get-total-quantity/{cartId}")
+    public ResponseEntity<Integer>getTotalItemsByCartId(@PathVariable String cartId){
+        return new ResponseEntity<>(itemCartService.getTotalItemsByCartId(cartId),HttpStatus.OK);
+    }
+
     //ELIMINA UN ITEM
     @DeleteMapping("/delete/{itemId}")
     public ResponseEntity<String>deleteItem(@PathVariable String itemId){

@@ -13,5 +13,6 @@ public interface IItemCartService {
     ResponseItemCartDto updateItemQuantity(RequestUpdateItemQuantityDto updateItemQuantityDto, boolean decrement);
     List<ResponseItemCartDto>getAll();
     List<ResponseItemCartDto> getByCartId(String cartId);
+    Integer getTotalItemsByCartId(String cartId);
     String deleteItemCart(String itemId);
 }
