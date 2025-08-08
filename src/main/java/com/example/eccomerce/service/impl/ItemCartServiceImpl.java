@@ -4,6 +4,7 @@ import com.example.eccomerce.mappers.ItemCartMapper;
 import com.example.eccomerce.model.ItemCart;
 import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
 import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
+import com.example.eccomerce.model.dtos.response.ItemWithProductInfoDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
 import com.example.eccomerce.model.dtos.response.ResponseProductDto;
 import com.example.eccomerce.repository.ItemCartRepository;
@@ -11,6 +12,7 @@ import com.example.eccomerce.service.interfaces.ICartService;
 import com.example.eccomerce.service.interfaces.IItemCartService;
 import com.example.eccomerce.service.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,10 +46,10 @@ public class ItemCartServiceImpl implements IItemCartService {
         itemCart=itemCartRepository.save(itemCart);
 
         //ACTUALIZA EL TOTAL DEL CARRITO
-        updateTotalCart(itemCart.getCartId());
+        updateTotalCart(itemCart.getCartId().toHexString());
         //ACTUALIZA LA LISTA DEL CARRITO SI TODAVIA NO EXISTE
         if (!optionalItemCart.isPresent()){
-            updateListOfCart(itemCart.getCartId(), itemCart.getId(), false);
+            updateListOfCart(itemCart.getCartId().toHexString(), itemCart.getId(), false);
         }
 
         //RETORNA EL ITEM MAPEADO A DTO
@@ -70,7 +72,7 @@ public class ItemCartServiceImpl implements IItemCartService {
         itemCart=calculateAndSetSubTotal(itemCart);
         itemCart=itemCartRepository.save(itemCart);
         //ACTUALIZA EL TOTAL DEL CARRITO
-        updateTotalCart(itemCart.getCartId());
+        updateTotalCart(itemCart.getCartId().toHexString());
 
         //RETORNA EL ITEM MAPEADO A DTO
         return itemCartMapper.ItemCartToItemCartDto(itemCart);
@@ -84,14 +86,19 @@ public class ItemCartServiceImpl implements IItemCartService {
 
     @Override
     public List<ResponseItemCartDto> getByCartId(String cartId) {
-        List<ItemCart>itemCartList=itemCartRepository.findByCartId(cartId)
+        List<ItemCart>itemCartList=itemCartRepository.findByCartId(new ObjectId(cartId))
                 .orElseThrow(()->new NoSuchElementException("Items by cartId: "+ cartId +" not found"));
         return itemCartMapper.ItemCartListToItemCartDtoList(itemCartList);
     }
 
     @Override
+    public List<ItemWithProductInfoDto>getItemWithProductByCartId(String cartId){
+        return itemCartRepository.findItemsWithProductInfoByCartId(new ObjectId(cartId));
+    }
+
+    @Override
     public Integer getTotalItemsByCartId(String cartId) {
-        return itemCartRepository.sumQuantityByCartId(cartId)
+        return itemCartRepository.sumQuantityByCartId(new ObjectId(cartId))
                 .map(ItemCartRepository.TotalQuantityResult::getTotalQuantity)
                 .orElse(0);
     }
@@ -101,9 +108,9 @@ public class ItemCartServiceImpl implements IItemCartService {
         Optional<ItemCart>optionalItemCart=itemCartRepository.findById(itemId);
         if (optionalItemCart.isPresent()){
             ItemCart itemCart=optionalItemCart.get();
-            updateListOfCart(itemCart.getCartId(),itemCart.getId(),true);
+            updateListOfCart(itemCart.getCartId().toHexString(),itemCart.getId(),true);
             itemCartRepository.deleteById(itemId);
-            updateTotalCart(itemCart.getCartId());
+            updateTotalCart(itemCart.getCartId().toHexString());
             return "Producto eliminado con exito";
         }else {
             throw new NoSuchElementException("item with id: "+ itemId +" not found");
@@ -111,11 +118,11 @@ public class ItemCartServiceImpl implements IItemCartService {
     }
 
     private Optional<ItemCart> getItemByCartIdAndProductId(String cartId, String productId){
-        return itemCartRepository.findByCartIdAndProductId(cartId, productId);
+        return itemCartRepository.findByCartIdAndProductId(new ObjectId(cartId), new ObjectId(productId));
     }
 
     private ItemCart calculateAndSetSubTotal(ItemCart itemCart){
-        ResponseProductDto productDto=productService.findById(itemCart.getProductId());
+        ResponseProductDto productDto=productService.findById(itemCart.getProductId().toHexString());
         itemCart.setSubTotal(productDto.price()*itemCart.getQuantity());
         return itemCart;
     }
