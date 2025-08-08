@@ -6,6 +6,7 @@ import com.example.eccomerce.model.dtos.response.ResponseCartDto;
 import com.example.eccomerce.repository.CartRepository;
 import com.example.eccomerce.service.interfaces.ICartService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,7 +32,7 @@ public class CartServiceImpl implements ICartService {
 
     @Override
     public ResponseCartDto getCartByUserId(String userId) {
-        Cart cart= cartRepository.findByUserId(userId)
+        Cart cart= cartRepository.findByUserId(new ObjectId(userId))
                 .orElseThrow(()->new NoSuchElementException("Cart with userId: "+userId+" not found"));
         System.out.println(cart);
         return cartMapper.cartToResponseCartDto(cart);

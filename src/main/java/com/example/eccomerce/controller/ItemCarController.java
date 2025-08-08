@@ -2,6 +2,7 @@ package com.example.eccomerce.controller;
 
 import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
 import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
+import com.example.eccomerce.model.dtos.response.ItemWithProductInfoDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
 import com.example.eccomerce.service.interfaces.IItemCartService;
 import jakarta.validation.Valid;
@@ -46,6 +47,12 @@ public class ItemCarController {
     @GetMapping("/list-by-cart-id/{cartId}")
     public ResponseEntity<List<ResponseItemCartDto>>getByCartId(@PathVariable String cartId){
         return new ResponseEntity<>(itemCartService.getByCartId(cartId),HttpStatus.OK);
+    }
+
+
+    @GetMapping("/list-item-with-product/{cartId}")
+    public ResponseEntity<List<ItemWithProductInfoDto>>getItemWithProductByCartId(@PathVariable String cartId){
+        return new ResponseEntity<>(itemCartService.getItemWithProductByCartId(cartId),HttpStatus.OK);
     }
 
     //OBTIENE EL TOTTAL DE ITEMS POR CARRITO
