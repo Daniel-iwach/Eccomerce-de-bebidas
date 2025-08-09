@@ -43,13 +43,19 @@ public class ItemCarController {
         return new ResponseEntity<>(itemCartService.getAll(),HttpStatus.OK);
     }
 
+    //OBTIENE ITEM POR ID
+    @GetMapping("/get-by-id/{itemId}")
+    public ResponseEntity<ResponseItemCartDto>getById(@PathVariable String itemId){
+        return new ResponseEntity<>(itemCartService.getById(itemId),HttpStatus.OK);
+    }
+
     //LISTA ITEMS POR CARRITO
     @GetMapping("/list-by-cart-id/{cartId}")
     public ResponseEntity<List<ResponseItemCartDto>>getByCartId(@PathVariable String cartId){
         return new ResponseEntity<>(itemCartService.getByCartId(cartId),HttpStatus.OK);
     }
 
-
+    //OBTIENE TODOS LOS ITEM CON DETALLES DEL PRODUCTO
     @GetMapping("/list-item-with-product/{cartId}")
     public ResponseEntity<List<ItemWithProductInfoDto>>getItemWithProductByCartId(@PathVariable String cartId){
         return new ResponseEntity<>(itemCartService.getItemWithProductByCartId(cartId),HttpStatus.OK);
@@ -65,5 +71,11 @@ public class ItemCarController {
     @DeleteMapping("/delete/{itemId}")
     public ResponseEntity<String>deleteItem(@PathVariable String itemId){
         return new ResponseEntity<>(itemCartService.deleteItemCart(itemId),HttpStatus.OK);
+    }
+
+    //ELIMINA TODOS LOS ITEM DEL CARRITO
+    @DeleteMapping("/clean-cart/{cartId}")
+    public ResponseEntity<String>cleanCart(@PathVariable String cartId){
+        return new ResponseEntity<>(itemCartService.deleteAllItemsByCartId(cartId),HttpStatus.OK);
     }
 }

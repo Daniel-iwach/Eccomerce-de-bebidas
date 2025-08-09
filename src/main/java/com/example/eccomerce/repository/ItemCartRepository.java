@@ -13,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface ItemCartRepository extends MongoRepository<ItemCart,String> {
     Optional<List<ItemCart>>findByCartId(ObjectId cartId);
+
+    Long deleteAllByCartId(ObjectId cartId);
+
     @Aggregation(pipeline = {
             "{ $match: { cartId: ?0 } }",
             "{ $lookup: { from: 'Products', localField: 'productId', foreignField: '_id', as: 'product' } }",
@@ -24,11 +27,13 @@ public interface ItemCartRepository extends MongoRepository<ItemCart,String> {
     List<ItemWithProductInfoDto> findItemsWithProductInfoByCartId(ObjectId cartId);
     Optional<ItemCart>findByCartIdAndProductId(ObjectId cartId, ObjectId productId);
 
+
     @Aggregation(pipeline = {
             "{ '$match': { 'cartId': ?0 } }",
             "{ '$group': { '_id': null, 'totalQuantity': { '$sum': '$quantity' } } }"
     })
     Optional<TotalQuantityResult> sumQuantityByCartId(ObjectId cartId);
+
 
     // Clase proyección para recibir el resultado
     interface TotalQuantityResult {
