@@ -16,12 +16,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ItemCart {
     @Id
     private String id;
-    @NotBlank
+
     private ObjectId cartId;
-    @NotBlank
+
     private ObjectId productId;
-    @NotNull
+
     private int quantity;
-    @NotNull
+
     private int subTotal;
 }

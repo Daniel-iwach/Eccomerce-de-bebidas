@@ -25,7 +25,7 @@ public class CartServiceImpl implements ICartService {
     private final MongoTemplate mongoTemplate;
 
     public ResponseCartDto createCart (String userId){
-        Cart cart= new Cart(null,userId,new ArrayList<String>(),0);
+        Cart cart= new Cart(null,new ObjectId(userId),new ArrayList<String>(),0);
         cart=cartRepository.save(cart);
         return cartMapper.cartToResponseCartDto(cart);
     }
@@ -34,7 +34,13 @@ public class CartServiceImpl implements ICartService {
     public ResponseCartDto getCartByUserId(String userId) {
         Cart cart= cartRepository.findByUserId(new ObjectId(userId))
                 .orElseThrow(()->new NoSuchElementException("Cart with userId: "+userId+" not found"));
-        System.out.println(cart);
+        return cartMapper.cartToResponseCartDto(cart);
+    }
+
+    @Override
+    public ResponseCartDto getCart(String cartId) {
+        Cart cart= cartRepository.findById(cartId)
+                .orElseThrow(()->new NoSuchElementException("Cart with cartId: "+cartId+" not found"));
         return cartMapper.cartToResponseCartDto(cart);
     }
 
@@ -58,6 +64,16 @@ public class CartServiceImpl implements ICartService {
             itemList.remove(itemId);
         }
         cart.setItemCartList(itemList);
+        cart=cartRepository.save(cart);
+        return cartMapper.cartToResponseCartDto(cart);
+    }
+
+    @Override
+    public ResponseCartDto resetCart(String cartId) {
+        Cart cart=cartRepository.findById(cartId)
+                .orElseThrow(()->new NoSuchElementException("Cart with Id: "+cartId+" not found"));
+        cart.setItemCartList(new ArrayList<>());
+        cart.setTotal(0);
         cart=cartRepository.save(cart);
         return cartMapper.cartToResponseCartDto(cart);
     }

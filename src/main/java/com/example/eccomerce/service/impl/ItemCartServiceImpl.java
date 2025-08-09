@@ -85,6 +85,13 @@ public class ItemCartServiceImpl implements IItemCartService {
     }
 
     @Override
+    public ResponseItemCartDto getById(String itemId) {
+        ItemCart itemCart=itemCartRepository.findById(itemId)
+                .orElseThrow(()->new NoSuchElementException("Items by Id: "+ itemId +" not found"));
+        return itemCartMapper.ItemCartToItemCartDto(itemCart);
+    }
+
+    @Override
     public List<ResponseItemCartDto> getByCartId(String cartId) {
         List<ItemCart>itemCartList=itemCartRepository.findByCartId(new ObjectId(cartId))
                 .orElseThrow(()->new NoSuchElementException("Items by cartId: "+ cartId +" not found"));
@@ -114,6 +121,17 @@ public class ItemCartServiceImpl implements IItemCartService {
             return "Producto eliminado con exito";
         }else {
             throw new NoSuchElementException("item with id: "+ itemId +" not found");
+        }
+    }
+
+    @Override
+    public String deleteAllItemsByCartId(String cartId) {
+        Long deleted= itemCartRepository.deleteAllByCartId(new ObjectId(cartId));
+        if (deleted>0){
+            cartService.resetCart(cartId);
+            return "items borrados";
+        }else {
+            return "error borrando los items";
         }
     }
 

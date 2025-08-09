@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
     private final ICartService cartService;
 
-    @GetMapping("/getCart/{userId}")
+    @GetMapping("/get-cart-by-user/{userId}")
     public ResponseEntity<ResponseCartDto>getByUserId(@PathVariable String userId){
         return new ResponseEntity<>(cartService.getCartByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-cart/{cartId}")
+    public ResponseEntity<ResponseCartDto>getCart(@PathVariable String cartId){
+        return new ResponseEntity<>(cartService.getCart(cartId), HttpStatus.OK);
     }
 }
