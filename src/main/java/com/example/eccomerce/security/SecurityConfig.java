@@ -64,6 +64,8 @@ public class SecurityConfig {
                             "/product/**",
                             "/cart/**",
                             "/item-cart/**",
+                            "/sale/**",
+                            "/sale-details/**",
                             "/auth/**",
                             "/uploads/**",
                             "/recuperar-contraseña/**",
