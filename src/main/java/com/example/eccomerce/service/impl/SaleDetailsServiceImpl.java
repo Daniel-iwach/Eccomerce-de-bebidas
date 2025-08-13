@@ -38,6 +38,7 @@ public class SaleDetailsServiceImpl implements ISaleDetailsService {
             saleDetailsIds.add(saleSaved.getId());
 
         });
+        itemCartService.deleteAllItemsByCartId(cartId);
         return saleDetailsIds;
     }
 }

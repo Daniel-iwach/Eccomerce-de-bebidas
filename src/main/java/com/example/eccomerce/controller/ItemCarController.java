@@ -1,6 +1,7 @@
 package com.example.eccomerce.controller;
 
 import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
+import com.example.eccomerce.model.dtos.request.RequestSetQuantityItemDto;
 import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
 import com.example.eccomerce.model.dtos.response.ItemWithProductInfoDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
@@ -35,6 +36,12 @@ public class ItemCarController {
     @PostMapping("/dec-item")
     public ResponseEntity<ResponseItemCartDto> decrementQuantity(@RequestBody @Valid RequestUpdateItemQuantityDto updateItemQuantityDto) {
         return new ResponseEntity<>(itemCartService.updateItemQuantity(updateItemQuantityDto,true), HttpStatus.OK);
+    }
+
+    //SETEAR CANTIDAD DEL ITEM
+    @PutMapping("/update")
+    public ResponseEntity<ResponseItemCartDto> updateQuantity(@RequestBody @Valid RequestSetQuantityItemDto quantityItemDto){
+        return new ResponseEntity<>(itemCartService.setItemQuantity(quantityItemDto),HttpStatus.OK);
     }
 
     //LISTA TODOS LOS ITEM

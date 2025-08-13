@@ -1,6 +1,7 @@
 package com.example.eccomerce.service.interfaces;
 
 import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
+import com.example.eccomerce.model.dtos.request.RequestSetQuantityItemDto;
 import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
 import com.example.eccomerce.model.dtos.response.ItemWithProductInfoDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
@@ -12,6 +13,7 @@ import java.util.List;
 public interface IItemCartService {
     ResponseItemCartDto addItemCart(RequestAddItemCartDto addItemCartDto);
     ResponseItemCartDto updateItemQuantity(RequestUpdateItemQuantityDto updateItemQuantityDto, boolean decrement);
+    ResponseItemCartDto setItemQuantity(RequestSetQuantityItemDto quantityItemDto);
     List<ResponseItemCartDto>getAll();
     ResponseItemCartDto getById(String itemId);
     List<ResponseItemCartDto> getByCartId(String cartId);
