@@ -3,6 +3,7 @@ package com.example.eccomerce.service.impl;
 import com.example.eccomerce.mappers.ItemCartMapper;
 import com.example.eccomerce.model.ItemCart;
 import com.example.eccomerce.model.dtos.request.RequestAddItemCartDto;
+import com.example.eccomerce.model.dtos.request.RequestSetQuantityItemDto;
 import com.example.eccomerce.model.dtos.request.RequestUpdateItemQuantityDto;
 import com.example.eccomerce.model.dtos.response.ItemWithProductInfoDto;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
@@ -71,6 +72,24 @@ public class ItemCartServiceImpl implements IItemCartService {
         //CALCULA SUBTOTAL Y CREA/ACTUALIZA EL ITEM
         itemCart=calculateAndSetSubTotal(itemCart);
         itemCart=itemCartRepository.save(itemCart);
+        //ACTUALIZA EL TOTAL DEL CARRITO
+        updateTotalCart(itemCart.getCartId().toHexString());
+
+        //RETORNA EL ITEM MAPEADO A DTO
+        return itemCartMapper.ItemCartToItemCartDto(itemCart);
+    }
+
+    @Override
+    public ResponseItemCartDto setItemQuantity(RequestSetQuantityItemDto quantityItemDto) {
+        ItemCart itemCart=itemCartRepository.findById(quantityItemDto.itemId())
+                .orElseThrow(()->new NoSuchElementException
+                        ("item cart with id: " + quantityItemDto.itemId() + " not found"));
+        itemCart.setQuantity(quantityItemDto.quantity());
+
+        //CALCULA SUBTOTAL Y ACTUALIZA EL ITEM
+        itemCart=calculateAndSetSubTotal(itemCart);
+        itemCart=itemCartRepository.save(itemCart);
+
         //ACTUALIZA EL TOTAL DEL CARRITO
         updateTotalCart(itemCart.getCartId().toHexString());
 
