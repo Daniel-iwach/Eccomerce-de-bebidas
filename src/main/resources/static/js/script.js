@@ -1,9 +1,9 @@
 // Datos de productos
 document.addEventListener('DOMContentLoaded', async function() {
-
+    
 // Variables globales
 let cart = [];
-let cartId = "688f77e1f236ea6d1ada9797";
+let cartId = localStorage.getItem('cartId');
 let products = [];
 let currentFilter = 'all';
 let searchTerm = '';
@@ -127,10 +127,9 @@ async function initializeEventListeners() {
 // Renderizar productos
 async function renderProducts() {
     let filteredProducts = products;
-    let cartId = "688f77e1f236ea6d1ada9797";
     // Aplicar filtros
     if (currentFilter !== 'all') {
-        filteredProducts = products.filter(product =>
+        filteredProducts = products.filter(product => 
             product.category.toLowerCase() === currentFilter.toLowerCase()
         );
     }
@@ -160,7 +159,7 @@ async function renderProducts() {
                     <button class="add-to-cart" data-product-id="${product.id}">
                         <i class="fas fa-cart-plus"></i> Agregar
                     </button>
-
+                    
                 </div>
             </div>
         </div>
@@ -192,13 +191,13 @@ async function addToCart(cartId, productId,event) {
 
     await updateCartUI(cartId);
     showAddToCartAnimation();
-
+    
     // Feedback visual
     const addButton = event.target;
     const originalText = addButton.innerHTML;
     addButton.innerHTML = '<i class="fas fa-check"></i> ¡Agregado!';
     addButton.style.background = '#28a745';
-
+    
     setTimeout(() => {
         addButton.innerHTML = originalText;
         addButton.style.background = '';
@@ -212,7 +211,7 @@ async function addItemToCart(cartId, productId) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
+            body: JSON.stringify({ 
                 "cartId": cartId,
                 "productId": productId,
                 quantity: 1
@@ -243,7 +242,7 @@ async function updateCartUI(cartId) {
 }
 
 function openCart() {
-    window.location.href = '/./carrito/cart.html';
+    window.location.href = '/html/cart.html';
 }
 
 
@@ -295,7 +294,7 @@ function showAddToCartAnimation() {
     const cartIcon = document.getElementById('cartIcon');
     cartIcon.style.transform = 'scale(1.2)';
     cartIcon.style.transition = 'transform 0.3s ease';
-
+    
     setTimeout(() => {
         cartIcon.style.transform = 'scale(1)';
     }, 300);
@@ -331,7 +330,7 @@ let isMoving = false;
 document.addEventListener('mousemove', function(e) {
     mouseX = e.clientX;
     mouseY = e.clientY;
-
+    
     if (!isMoving) {
         isMoving = true;
         requestAnimationFrame(updateBottleEffect);
@@ -344,37 +343,20 @@ function updateBottleEffect() {
         const rect = bottle.getBoundingClientRect();
         const x = mouseX - rect.left - rect.width / 2;
         const y = mouseY - rect.top - rect.height / 2;
-
+        
         const rotateX = Math.max(-15, Math.min(15, (y / rect.height) * 8));
         const rotateY = Math.max(-15, Math.min(15, (x / rect.width) * 8));
-
+        
         bottle.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
     });
     isMoving = false;
 }
 
-// Efecto parallax optimizado
-let parallaxTicking = false;
-function updateParallax() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero && scrolled < window.innerHeight) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-    parallaxTicking = false;
-}
-
-window.addEventListener('scroll', function() {
-    if (!parallaxTicking) {
-        requestAnimationFrame(updateParallax);
-        parallaxTicking = true;
-    }
-});
 
 // Preloader simple (opcional)
 window.addEventListener('load', function() {
     document.body.classList.add('loaded');
-
+    
     // Agregar clase para animaciones iniciales
     setTimeout(() => {
         document.querySelectorAll('.category-card').forEach((card, index) => {

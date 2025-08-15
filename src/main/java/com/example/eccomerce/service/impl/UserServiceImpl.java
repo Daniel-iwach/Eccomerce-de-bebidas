@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +52,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ResponseUserDto findById(String id) {
         return null;
+    }
+
+    @Override
+    public ResponseUserDto findByEmail(String email) {
+        return userMapper.userEntityToUserDto(userRepository.findByEmail(email)
+                .orElseThrow(()->new NoSuchElementException("user with email: "+email+" not found")));
     }
 }
