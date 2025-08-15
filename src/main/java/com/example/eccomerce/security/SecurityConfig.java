@@ -48,7 +48,13 @@ public class SecurityConfig {
                     // Content Security Policy (CSP)
                     .contentSecurityPolicy(csp -> csp
 //                            .policyDirectives("default-src 'self'; script-src 'self';")
-                              .policyDirectives("default-src 'self'; img-src 'self' data: ")
+                            .policyDirectives(
+                                    "default-src 'self'; " +
+                                            "style-src 'self' https://cdnjs.cloudflare.com; " +
+                                            "font-src 'self' https://cdnjs.cloudflare.com; " +
+                                            "img-src 'self' data:"
+                            )
+
                     )
                     // Protección contra clickjacking
                     .frameOptions(frame -> frame
@@ -62,6 +68,7 @@ public class SecurityConfig {
                     .requestMatchers(
                             "http://localhost:8080/**",
                             "/product/**",
+                            "/users/**",
                             "/cart/**",
                             "/item-cart/**",
                             "/sale/**",

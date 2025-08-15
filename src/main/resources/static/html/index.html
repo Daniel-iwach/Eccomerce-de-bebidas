@@ -3,158 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com;">
+
     <title>Lanusita Bebidas - Bebidas Alcohólicas</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <!-- Header -->
-<header class="header">
-    <div class="container">
-        <div class="nav-brand">
-            <i class="fas fa-wine-bottle"></i>
-            <h1>Lanusita Bebidas</h1>
-        </div>
-        <nav class="nav-menu">
-            <a href="#home" class="nav-link active">Inicio</a>
-            <a href="#about" class="nav-link">Nosotros</a>
-            <a href="#products" class="nav-link">Productos</a>
-            <a href="#contact" class="nav-link">Contacto</a>
-        </nav>
-        <div class="nav-icons">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Buscar productos...">
-                <i class="fas fa-search"></i>
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-wine-bottle"></i>
+                <h1>Lanusita Bebidas</h1>
             </div>
-            <div class="cart-icon" id="cartIcon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count" id="cartCount">0</span>
+            <nav class="nav-menu">
+                <a href="#home" class="nav-link active">Inicio</a>
+                <a href="#about" class="nav-link">Nosotros</a>
+                <a href="#products" class="nav-link">Productos</a>
+                <a href="#contact" class="nav-link">Contacto</a>
+            </nav>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Buscar productos...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<!-- Hero Section -->
-<section id="home" class="hero">
-    <div class="container">
-        <div class="hero-content">
-            <h2>Experiencia Premium en Bebidas Selectas</h2>
-            <p>Curada colección de los mejores vinos, whiskeys, rones y licores del mundo. Cada botella cuenta una historia, cada sorbo es una experiencia única.</p>
-            <button class="cta-button" onclick="scrollToProducts()">Explorar Colección</button>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Experiencia Premium en Bebidas Selectas</h2>
+                <p>Curada colección de los mejores vinos, whiskeys, rones y licores del mundo. Cada botella cuenta una historia, cada sorbo es una experiencia única.</p>
+                <button class="cta-button" id="exploreCollection">Explorar Colección</button>
+            </div>
+            <div class="hero-image">
+                <div class="bottle-showcase"></div>
+            </div>
         </div>
-        <div class="hero-image">
-            <div class="bottle-showcase"></div>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- About Section -->
-<section id="about" class="about">
-    <div class="container">
-        <div class="about-content">
-            <h3>Tradición y Excelencia desde 1985</h3>
-            <p>LiquorShop nació de la pasión por las bebidas excepcionales. Durante más de tres décadas, hemos sido los curadores de las mejores etiquetas del mundo, trabajando directamente con destilerías, bodegas y productores artesanales.</p>
-            <p>Nuestro equipo de sommeliers y expertos en destilados selecciona personalmente cada producto, garantizando que solo las mejores expresiones lleguen a nuestros clientes más exigentes.</p>
-            <div class="about-stats">
-                <div class="stat-item">
-                    <span class="stat-number">500+</span>
-                    <span class="stat-label">Productos Premium</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">25</span>
-                    <span class="stat-label">Países Representados</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">15K+</span>
-                    <span class="stat-label">Clientes Satisfechos</span>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <h3>Tradición y Excelencia desde 1985</h3>
+                <p>LiquorShop nació de la pasión por las bebidas excepcionales. Durante más de tres décadas, hemos sido los curadores de las mejores etiquetas del mundo, trabajando directamente con destilerías, bodegas y productores artesanales.</p>
+                <p>Nuestro equipo de sommeliers y expertos en destilados selecciona personalmente cada producto, garantizando que solo las mejores expresiones lleguen a nuestros clientes más exigentes.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Productos Premium</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">25</span>
+                        <span class="stat-label">Países Representados</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Clientes Satisfechos</span>
+                    </div>
                 </div>
             </div>
+            <div class="about-image"></div>
         </div>
-        <div class="about-image"></div>
-    </div>
-</section>
+    </section>
 
-<!-- Products Section -->
-<section id="products" class="products">
-    <div class="container">
-        <div class="section-header">
-            <h3>Nuestros Productos</h3>
-            <p>Descubre nuestra cuidadosa selección de bebidas premium, cada una elegida por su calidad excepcional y carácter único.</p>
-            <div class="filter-categories">
-                <div class="filter-category active" data-filter="all">
-                    <i class="fas fa-th-large"></i>
-                    <span>Todos</span>
-                </div>
-                <div class="filter-category" data-filter="vino">
-                    <i class="fas fa-wine-glass"></i>
-                    <span>Vinos</span>
-                </div>
-                <div class="filter-category" data-filter="whiskey">
-                    <i class="fas fa-glass-whiskey"></i>
-                    <span>Whiskey</span>
-                </div>
-                <div class="filter-category" data-filter="cerveza">
-                    <i class="fas fa-beer"></i>
-                    <span>Cervezas</span>
-                </div>
-                <div class="filter-category" data-filter="ron">
-                    <i class="fas fa-cocktail"></i>
-                    <span>Ron & Licores</span>
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h3>Nuestros Productos</h3>
+                <p>Descubre nuestra cuidadosa selección de bebidas premium, cada una elegida por su calidad excepcional y carácter único.</p>
+                <div class="filter-categories">
+                    <div class="filter-category active" data-filter="all">
+                        <i class="fas fa-th-large"></i>
+                        <span>Todos</span>
+                    </div>
+                    <div class="filter-category" data-filter="vino">
+                        <i class="fas fa-wine-glass"></i>
+                        <span>Vinos</span>
+                    </div>
+                    <div class="filter-category" data-filter="whiskey">
+                        <i class="fas fa-glass-whiskey"></i>
+                        <span>Whiskey</span>
+                    </div>
+                    <div class="filter-category" data-filter="cerveza">
+                        <i class="fas fa-beer"></i>
+                        <span>Cervezas</span>
+                    </div>
+                    <div class="filter-category" data-filter="ron">
+                        <i class="fas fa-cocktail"></i>
+                        <span>Ron & Licores</span>
+                    </div>
                 </div>
             </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Aquí se renderizan los productos -->
+            </div>
         </div>
+    </section>
 
-        <div class="products-grid" id="productsGrid">
-            <!-- Aquí se renderizan los productos -->
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer" id="contact">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>LiquorShop Premium</h4>
-                <p>Más de 35 años siendo la referencia en bebidas premium. Calidad, tradición y excelencia en cada botella que seleccionamos para nuestros clientes más exigentes.</p>
-                <div class="social-icons">
-                    <i class="fab fa-facebook"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-linkedin"></i>
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>LiquorShop Premium</h4>
+                    <p>Más de 35 años siendo la referencia en bebidas premium. Calidad, tradición y excelencia en cada botella que seleccionamos para nuestros clientes más exigentes.</p>
+                    <div class="social-icons">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#about">Nosotros</a></li>
+                        <li><a href="#products">Productos</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="#">Asesoramiento Personalizado</a></li>
+                        <li><a href="#">Envío Premium</a></li>
+                        <li><a href="#">Cata Privadas</a></li>
+                        <li><a href="#">Colecciones Exclusivas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto Premium</h4>
+                    <p><i class="fas fa-phone"></i> +54 11 4567-8900</p>
+                    <p><i class="fas fa-envelope"></i> premium@liquorshop.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. Corrientes 1234, CABA</p>
+                    <p><i class="fas fa-clock"></i> Lun-Sáb: 10:00-20:00</p>
                 </div>
             </div>
-            <div class="footer-section">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="#home">Inicio</a></li>
-                    <li><a href="#about">Nosotros</a></li>
-                    <li><a href="#products">Productos</a></li>
-                    <li><a href="#contact">Contacto</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Servicios</h4>
-                <ul>
-                    <li><a href="#">Asesoramiento Personalizado</a></li>
-                    <li><a href="#">Envío Premium</a></li>
-                    <li><a href="#">Cata Privadas</a></li>
-                    <li><a href="#">Colecciones Exclusivas</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contacto Premium</h4>
-                <p><i class="fas fa-phone"></i> +54 11 4567-8900</p>
-                <p><i class="fas fa-envelope"></i> premium@liquorshop.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Av. Corrientes 1234, CABA</p>
-                <p><i class="fas fa-clock"></i> Lun-Sáb: 10:00-20:00</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 LiquorShop Premium. Todos los derechos reservados.</p>
+                <p class="age-warning">⚠️ Prohibida la venta de alcohol a menores de 18 años - Beber con moderación</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 LiquorShop Premium. Todos los derechos reservados.</p>
-            <p class="age-warning">⚠️ Prohibida la venta de alcohol a menores de 18 años - Beber con moderación</p>
-        </div>
-    </div>
-</footer>
-<script src="script.js"></script>
+    </footer>
+    <script src="../js/script.js"></script>
 </body>
 </html>

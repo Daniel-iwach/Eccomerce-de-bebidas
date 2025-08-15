@@ -14,4 +14,6 @@ public interface IUserService {
     List<ResponseUserDto> listAll();
 
     ResponseUserDto findById(String id);
+
+    ResponseUserDto findByEmail(String email);
 }

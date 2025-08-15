@@ -3,14 +3,18 @@ package com.example.eccomerce.service.impl;
 import com.example.eccomerce.mappers.CartMapper;
 import com.example.eccomerce.model.Cart;
 import com.example.eccomerce.model.dtos.response.ResponseCartDto;
+import com.example.eccomerce.model.dtos.response.ResponseUserDto;
 import com.example.eccomerce.repository.CartRepository;
 import com.example.eccomerce.service.interfaces.ICartService;
+import com.example.eccomerce.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

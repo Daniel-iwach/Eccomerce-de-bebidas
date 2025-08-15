@@ -208,7 +208,7 @@ body {
     align-items: center;
     padding: 8rem 0;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; 
 }
 
 .hero::before {
@@ -218,7 +218,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background:
+    background: 
         radial-gradient(circle at 25% 75%, rgba(201, 169, 110, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 75% 25%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
     opacity: 0.7;
@@ -281,12 +281,20 @@ body {
 .bottle-showcase {
     width: 280px;
     height: 380px;
-    background: rgba(255, 255, 255, 0.1);
+    background-image: url('../../../../../uploads/D_NQ_NP_976827-MLU74865775322_032024-O-removebg-preview.png');
+    background-size: contain; /* Ajusta la imagen al div */
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: var(--border-radius-large);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     animation: float 6s ease-in-out infinite;
+    box-shadow:
+        /* 0 5px 15px rgba(215, 53, 53, 0.2),   
+        0 10px 30px rgba(181, 53, 53, 0.15);  */
+        0 5px 15px rgba(255, 0, 0, 0.2), 
+        0 10px 30px var(--accent-color); /* sombra más amplia */
 }
 
 .bottle-showcase::after {
@@ -308,11 +316,11 @@ body {
 }
 
 @keyframes float {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
     }
-    50% {
-        transform: translateY(-20px) rotate(2deg);
+    50% { 
+        transform: translateY(-20px) rotate(2deg); 
     }
 }
 
@@ -520,7 +528,7 @@ body {
     object-fit: contain;
     object-position: center;
     transition: transform 0.3s ease;
-
+    
     /* width: 100%;
     height: 80vh;
     object-fit: contain;
@@ -896,57 +904,57 @@ body {
         gap: 1rem;
         padding: 1rem 24px;
     }
-
+    
     .nav-menu {
         order: 3;
         width: 100%;
         justify-content: center;
         gap: 1.5rem;
     }
-
+    
     .search-container input {
         width: 250px;
     }
-
+    
     .hero .container {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 3rem;
     }
-
+    
     .hero-content h2 {
         font-size: 3rem;
     }
-
+    
     .about .container {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
-
+    
     .about-stats {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
     }
-
+    
     .filter-categories {
         gap: 0.5rem;
     }
-
+    
     .filter-category {
         padding: 10px 16px;
         font-size: 0.9rem;
     }
-
+    
     .products-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-
+    
     .modal-content {
         width: 95%;
         margin: 5% auto;
     }
-
+    
     .modal-footer {
         flex-direction: column;
     }
@@ -956,23 +964,23 @@ body {
     .hero-content h2 {
         font-size: 2.5rem;
     }
-
+    
     .about-content h3,
     .section-header h3 {
         font-size: 2.5rem;
     }
-
+    
     .about-stats {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-
+    
     .cart-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
-
+    
     .quantity-controls {
         margin: 0;
     }

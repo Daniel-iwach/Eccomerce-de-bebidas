@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Lanusita Bebidas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/cartStyles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-wine-bottle"></i>
+                <h1>Lanusita Bebidas</h1>
+            </div>
+            <a href="/html/index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Seguir Comprando
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-title">
+                <h2>Tu Carrito de Compras</h2>
+                <p>Revisa tus productos seleccionados antes de finalizar tu compra</p>
+            </div>
+
+            <div class="cart-container">
+                <!-- Cart Items -->
+                <div class="cart-items">
+                    <h3>Productos Seleccionados</h3>
+                    <div id="cart-list">
+                        <!-- Cart Item 1 -->
+                        <div class="cart-item">
+                            <div class="item-image">
+                            </div>
+                            <div class="item-info">
+                                <div class="item-category">Whiskey</div>
+                                <h4>Johnnie Walker Black Label</h4>
+                            </div>
+                            <div class="item-price">$12.500</div>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" >-</button>
+                                <input type="number" class="quantity-input" value="2" min="1" id="qty-1" >
+                                <button class="quantity-btn" >+</button>
+                            </div>
+                            <div class="item-subtotal" id="subtotal-1">$25.000</div>
+                            <button class="remove-item" >
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                    
+                    
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3>Resumen de Compra</h3>
+                    
+                    <!-- <div class="coupon-section">
+                        <h4>¿Tienes un cupón?</h4>
+                        <div class="coupon-input-group">
+                            <input type="text" class="coupon-input" placeholder="Código de descuento">
+                            <button class="coupon-btn">Aplicar</button>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="summary-row">
+                        <span class="summary-label">Subtotal</span>
+                        <span class="summary-value" id="cart-subtotal">$33.200</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Envío</span>
+                        <span class="summary-value">$2.500</span>
+                    </div> -->
+                    <!-- <div class="summary-row">
+                        <span class="summary-label">IVA (21%)</span>
+                        <span class="summary-value" id="cart-tax">$6.972</span>
+                    </div> -->
+                    <div class="summary-row total-row">
+                        <span class="summary-label">Total</span>
+                        <span class="summary-value" id="cart-total">$42.672</span>
+                    </div>
+
+                    <div class="cart-actions">
+                        <button class="btn-primary" id="checkout-btn" >
+                            <i class="fas fa-credit-card"></i>
+                            Finalizar Compra
+                        </button>
+                        <button class="btn-secondary" id="clear-cart">
+                            <i class="fas fa-trash-alt"></i>
+                            Vaciar Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../js/cart.js"></script>
+</body>
+</html>
