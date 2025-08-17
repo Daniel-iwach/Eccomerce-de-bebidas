@@ -64,18 +64,22 @@ Proyecto de e-commerce especializado en la venta de bebidas, pensado para brinda
 ## 📂 Estructura del Proyecto
 
 ```
+
 backend/
  ├─ src/main/java/com/ecommerce/
- │    ├─ controller/     # Endpoints de la API
- │    ├─ service/        # Lógica de negocio
- │    ├─ repository/     # Acceso a MongoDB
- │    └─ model/          # Entidades del proyecto
+ │    ├─ coonfig/      # Configuracion del proyecto
+ │    ├─ controller/   # Endpoints de la API
+ │    ├─ exception/    # Excepciones propias
+ │    ├─ mappers/      # Mapeadores
+ │    ├─ security/     # Seguridad
+ │    ├─ service/      # Lógica de negocio
+ │    ├─ repository/   # Acceso a MongoDB
+ │    └─ model/        # Entidades del proyecto
  ├─ resources/
- │    └─ application.properties
-frontend/
- ├─ index.html
- ├─ css/                # Estilos
- └─ js/                 # Scripts
+      ├─ html/
+      ├─ css/                # Estilos
+      └─ js/                 # Scripts
+      └─ application.properties
 ```
 
 ---
