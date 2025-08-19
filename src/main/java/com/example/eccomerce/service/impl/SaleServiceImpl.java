@@ -3,15 +3,22 @@ package com.example.eccomerce.service.impl;
 import com.example.eccomerce.mappers.SaleMapper;
 import com.example.eccomerce.model.Sale;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
+import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
 import com.example.eccomerce.model.dtos.response.ResponseCartDto;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
+import com.example.eccomerce.model.enums.ESaleState;
 import com.example.eccomerce.repository.SaleRepository;
 import com.example.eccomerce.service.interfaces.ICartService;
 import com.example.eccomerce.service.interfaces.ISaleDetailsService;
 import com.example.eccomerce.service.interfaces.ISaleService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,6 +32,9 @@ public class SaleServiceImpl implements ISaleService {
     @Override
     public ResponseSaleDto createSale(RequestCreateSaleDto createSaleDto) {
         Sale sale= saleMapper.createSaleToSale(createSaleDto);
+        sale.setState(ESaleState.PENDIENTE);
+        sale.setPayId(new ObjectId());
+        sale.setDateTime(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")).toLocalDateTime());
         sale=saleRepository.save(sale);
         System.out.println(sale);
 
@@ -42,6 +52,14 @@ public class SaleServiceImpl implements ISaleService {
     @Override
     public List<ResponseSaleDto> listAll() {
         return saleMapper.saleListToSaleDtoList(saleRepository.findAll());
+    }
+
+    @Override
+    public List<ResponseSaleDto> findByDateTime(RequestFindByDateTime request) {
+        if (request.start().isAfter(request.end())) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser mayor que la de fin");
+        }
+        return saleMapper.saleListToSaleDtoList(saleRepository.findByDateTimeBetween(request.start(),request.end()));
     }
 
     private String findCartByUserId(String userId){

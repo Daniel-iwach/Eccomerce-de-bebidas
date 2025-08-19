@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,8 @@ public class Sale {
     private ObjectId userId;
     private ObjectId payId;
     private Integer total;
+    private LocalDateTime dateTime;
     private List<String> saleDetailsList;
     private ESaleState state;
 
-    @PrePersist
-    public void SaleInit(){
-        this.state=ESaleState.PENDIENTE;
-        this.saleDetailsList=new ArrayList<>();
-    }
 }
