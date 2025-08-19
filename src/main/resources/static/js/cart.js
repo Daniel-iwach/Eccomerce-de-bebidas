@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', async function(event){
             const response = await fetch(`http://localhost:8080/item-cart/clean-cart/${cartId}`, {
                 method: 'DELETE'
             });
-            const data = await response.json();
+            const data = await response.text();
             console.log(data);
         } catch (error) {
             console.error('Error al obtener los items:', error);

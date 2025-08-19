@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +18,13 @@ import java.util.List;
 public class SaleController {
     private final ISaleService saleService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/create")
     public ResponseEntity<ResponseSaleDto>createSale(@RequestBody @Valid RequestCreateSaleDto createSaleDto){
         return new ResponseEntity<>(saleService.createSale(createSaleDto), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list-all")
     public ResponseEntity<List<ResponseSaleDto>>getAll(){
         return new ResponseEntity<>(saleService.listAll(),HttpStatus.OK);
