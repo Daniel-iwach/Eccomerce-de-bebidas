@@ -43,16 +43,6 @@ public class ProductServiceImpl implements IProductService {
         return productMapper.ProductToProductDto(product);
     }
 
-//    public ResponseProductDto create(RequestProductCreateDto productCreateDto){
-//        Product product=productMapper.ProductCreateDtoToProduct(productCreateDto);
-//
-//        product.setStock(0);
-//        product.setState(EProductState.DESACTIVADO);
-//
-//        product=productRepository.save(product);
-//        System.out.println(product);
-//        return productMapper.ProductToProductDto(product);
-//    }
 
     @Override
     public ResponseProductDto findById(String produdctId) {

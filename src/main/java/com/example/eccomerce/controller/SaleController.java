@@ -1,6 +1,7 @@
 package com.example.eccomerce.controller;
 
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
+import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
 import com.example.eccomerce.service.interfaces.ISaleService;
 import jakarta.validation.Valid;
@@ -29,4 +30,12 @@ public class SaleController {
     public ResponseEntity<List<ResponseSaleDto>>getAll(){
         return new ResponseEntity<>(saleService.listAll(),HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/find-by-date-range")
+    public ResponseEntity<List<ResponseSaleDto>>findByDateTime(@RequestBody @Valid RequestFindByDateTime request){
+        return new ResponseEntity<>(saleService.findByDateTime(request),HttpStatus.OK);
+    }
+
+
 }

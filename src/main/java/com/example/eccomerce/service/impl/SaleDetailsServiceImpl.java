@@ -8,6 +8,7 @@ import com.example.eccomerce.service.interfaces.IItemCartService;
 import com.example.eccomerce.service.interfaces.ISaleDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,10 +42,25 @@ public class SaleDetailsServiceImpl implements ISaleDetailsService {
         itemCartService.deleteAllItemsByCartId(cartId);
         return saleDetailsIds;
     }
+
+    @Override
+    public void findMostSoldProducts() {
+        List<Document> documentList= saleDetailsRepository.findMostSoldProduct();
+        for (int i = 0; i < documentList.size(); i++) {
+            System.out.println(documentList.get(i));
+            System.out.println("-----------------");
+
+        }
+    }
+
+    @Override
+    public void findLeastSoldProduct() {
+        List<Document> documentList= saleDetailsRepository.findLeastSoldProduct();
+        for (int i = 0; i < documentList.size(); i++) {
+            System.out.println(documentList.get(i));
+            System.out.println("-----------------");
+
+        }
+    }
 }
-//            new SaleDetails(null,
-//                    new ObjectId(saleId),
-//                    new ObjectId(item.productId()),
-//                    item.quantity(),
-//                    item.subTotal()
-//            );
+
