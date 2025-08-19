@@ -5,6 +5,7 @@ import com.example.eccomerce.service.interfaces.ICartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
     private final ICartService cartService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/get-cart-by-user/{userId}")
     public ResponseEntity<ResponseCartDto>getByUserId(@PathVariable String userId){
         return new ResponseEntity<>(cartService.getCartByUserId(userId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/get-cart/{cartId}")
     public ResponseEntity<ResponseCartDto>getCart(@PathVariable String cartId){
         return new ResponseEntity<>(cartService.getCart(cartId), HttpStatus.OK);

@@ -67,12 +67,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
                             "http://localhost:8080/**",
-                            "/product/**",
-                            "/users/**",
-                            "/cart/**",
-                            "/item-cart/**",
-                            "/sale/**",
-                            "/sale-details/**",
+                            "/product/getAll",
+//                            "/users/**",
+//                            "/cart/**",
+//                            "/item-cart/**",
+//                            "/sale/**",
+//                            "/sale-details/**",
                             "/auth/**",
                             "/uploads/**",
                             "/recuperar-contraseña/**",

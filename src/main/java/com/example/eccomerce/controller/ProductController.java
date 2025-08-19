@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class ProductController {
 //        return new ResponseEntity<>(productService.create(createProductDto), HttpStatus.OK);
 //    }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> crearProducto(
             @RequestParam("name") String name,
@@ -44,6 +46,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.listAll(),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/getById/{productId}")
     public ResponseEntity<ResponseProductDto>getById(@PathVariable String productId){
         return new ResponseEntity<>(productService.findById(productId),HttpStatus.OK);
