@@ -2,9 +2,9 @@ package com.example.eccomerce.service.impl;
 
 import com.example.eccomerce.mappers.SaleMapper;
 import com.example.eccomerce.model.Sale;
+import com.example.eccomerce.model.dtos.response.ResponseSaleSummaryDto;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
 import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
-import com.example.eccomerce.model.dtos.response.ResponseCartDto;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
 import com.example.eccomerce.model.enums.ESaleState;
 import com.example.eccomerce.repository.SaleRepository;
@@ -15,10 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -57,9 +55,20 @@ public class SaleServiceImpl implements ISaleService {
     @Override
     public List<ResponseSaleDto> findByDateTime(RequestFindByDateTime request) {
         if (request.start().isAfter(request.end())) {
-            throw new IllegalArgumentException("La fecha de inicio no puede ser mayor que la de fin");
+            throw new IllegalArgumentException("La fecha de inicio no puede ser despues que la de fin");
         }
         return saleMapper.saleListToSaleDtoList(saleRepository.findByDateTimeBetween(request.start(),request.end()));
+    }
+
+    @Override
+    public ResponseSaleSummaryDto getBalanceBetweenDates(RequestFindByDateTime request) {
+        if (request.start().isAfter(request.end())) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser despues que la de fin");
+        }
+        ResponseSaleSummaryDto saleSummary=saleRepository.
+                getSalesSummary(request.start(),request.end());
+        System.out.println(saleSummary);
+        return saleSummary;
     }
 
     private String findCartByUserId(String userId){
