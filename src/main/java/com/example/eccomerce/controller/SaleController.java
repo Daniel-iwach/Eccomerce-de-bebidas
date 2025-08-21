@@ -1,5 +1,6 @@
 package com.example.eccomerce.controller;
 
+import com.example.eccomerce.model.dtos.response.ResponseSaleSummaryDto;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
 import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
@@ -35,6 +36,12 @@ public class SaleController {
     @GetMapping("/find-by-date-range")
     public ResponseEntity<List<ResponseSaleDto>>findByDateTime(@RequestBody @Valid RequestFindByDateTime request){
         return new ResponseEntity<>(saleService.findByDateTime(request),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/get-balance-between-dates")
+    public ResponseEntity<ResponseSaleSummaryDto> getBalanceBetweenDates(@RequestBody @Valid RequestFindByDateTime requestFindByDateTime){
+        return new ResponseEntity<>(saleService.getBalanceBetweenDates(requestFindByDateTime),HttpStatus.OK);
     }
 
 
