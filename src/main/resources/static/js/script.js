@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     async function getAllProducts() {
         try {
-            const response = await fetch('http://localhost:8080/product/getAll');
+            const response = await fetch("http://localhost:8080/products/get-all");
             const data = await response.json();
             return data;
         } catch (error) {
@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     function openCart() {
         if(localStorage.getItem('cartId') === null) {
+            localStorage.clear();
             window.location.href = '/html/login.html';
         }else{
             window.location.href = '/html/cart.html';

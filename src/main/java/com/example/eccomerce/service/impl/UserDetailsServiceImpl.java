@@ -105,7 +105,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        if (!userEntity.getState().equals(EUserState.ACTIVADO)){    //esta para que no detecte el estado (CAMBIALO)
+        if (userEntity.getState().equals(EUserState.ACTIVADO)){    //esta para que no detecte el estado (CAMBIALO)
             // Return the authentication token
             return new UsernamePasswordAuthenticationToken(userEntity.getEmail(), password, userDetails.getAuthorities());
         }else {

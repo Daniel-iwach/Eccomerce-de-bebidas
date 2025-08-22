@@ -5,17 +5,18 @@ import com.example.eccomerce.model.enums.EUserState;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 public record ResponseUserDto(
         String id,
-        @NotBlank
         String name,
-        @NotBlank
+        String lastName,
         String email,
-        @NotBlank
+        LocalDate birthday,
+        Date registerDate,
         String address,
-        @NotNull
         int numberPhone,
         Set<ERole> roleList,
         EUserState state

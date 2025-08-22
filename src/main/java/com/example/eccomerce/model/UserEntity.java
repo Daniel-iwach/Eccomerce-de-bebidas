@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -17,9 +19,11 @@ public class UserEntity {
     @Id
     private String id;
     private String name;
+    private String lastName;
     @Indexed(unique = true)
     private String email;
     private String password;
+    private LocalDate birthday;
     private Date registerDate;
     private String address;
     private int numberPhone;
@@ -27,18 +31,4 @@ public class UserEntity {
     private EUserState state;
 
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", registerDate=" + registerDate +
-                ", address='" + address + '\'' +
-                ", numberPhone=" + numberPhone +
-                ", roleList=" + roleList +
-                ", state=" + state +
-                '}';
-    }
 }

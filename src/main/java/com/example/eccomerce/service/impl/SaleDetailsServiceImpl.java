@@ -3,12 +3,14 @@ package com.example.eccomerce.service.impl;
 import com.example.eccomerce.mappers.SaleDetailsMapper;
 import com.example.eccomerce.model.SaleDetails;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
+import com.example.eccomerce.model.dtos.response.ResponseMostSoldProductDto;
 import com.example.eccomerce.repository.SaleDetailsRepository;
 import com.example.eccomerce.service.interfaces.IItemCartService;
 import com.example.eccomerce.service.interfaces.ISaleDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.Document;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,23 +46,13 @@ public class SaleDetailsServiceImpl implements ISaleDetailsService {
     }
 
     @Override
-    public void findMostSoldProducts() {
-        List<Document> documentList= saleDetailsRepository.findMostSoldProduct();
-        for (int i = 0; i < documentList.size(); i++) {
-            System.out.println(documentList.get(i));
-            System.out.println("-----------------");
-
-        }
+    public List<ResponseMostSoldProductDto> findMostSoldProducts() {
+        return saleDetailsRepository.findMostSoldProduct();
     }
 
     @Override
-    public void findLeastSoldProduct() {
-        List<Document> documentList= saleDetailsRepository.findLeastSoldProduct();
-        for (int i = 0; i < documentList.size(); i++) {
-            System.out.println(documentList.get(i));
-            System.out.println("-----------------");
-
-        }
+    public List<ResponseMostSoldProductDto> findLeastSoldProduct() {
+        return saleDetailsRepository.findLeastSoldProduct();
     }
 }
 

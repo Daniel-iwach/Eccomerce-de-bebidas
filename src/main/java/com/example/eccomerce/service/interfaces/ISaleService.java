@@ -1,5 +1,7 @@
 package com.example.eccomerce.service.interfaces;
 
+
+import com.example.eccomerce.model.dtos.response.ResponseAnnualStatisticsDto;
 import com.example.eccomerce.model.dtos.response.ResponseSaleSummaryDto;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
 import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
@@ -11,7 +13,19 @@ import java.util.List;
 @Service
 public interface ISaleService {
     ResponseSaleDto createSale(RequestCreateSaleDto createSaleDto);
+
     List<ResponseSaleDto>listAll();
     List<ResponseSaleDto>findByDateTime(RequestFindByDateTime requestFindByDateTime);
+    List<ResponseSaleDto>findSalesOfWeek();
+    List<ResponseSaleDto>findSalesOfMonth();
+    List<ResponseSaleDto>findSalesOfAge();
+
+
     ResponseSaleSummaryDto getBalanceBetweenDates(RequestFindByDateTime requestFindByDateTime);
+    ResponseSaleSummaryDto getBalanceOfMonth();
+    ResponseSaleSummaryDto getBalanceOfWeek();
+    ResponseSaleSummaryDto getBalanceOfAge();
+
+    ResponseAnnualStatisticsDto getAnnualStatistics(boolean current);
+
 }

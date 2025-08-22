@@ -9,12 +9,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -55,21 +57,49 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
                 context.setAuthentication(authenticationToken);
                 SecurityContextHolder.setContext(context);
+                filterChain.doFilter(request, response);
 
+            }catch (JwtException | IllegalArgumentException e) {
+                // Token inválido o expirado → 401
+                System.out.println("jwt");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Unauthorized: " + e.getMessage());
+                return;
+            } catch (AccessDeniedException e) {
+                System.out.println("acces");
+                // Usuario autenticado pero sin permisos → 403
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Forbidden: " + e.getMessage());
+                return;
             } catch (Exception e) {
                 System.out.println("Error validando token: " + e.getMessage());
                 // Limpiar contexto de seguridad si el token es inválido
                 SecurityContextHolder.clearContext();
+                return;
             }
+        }else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: no token provided");
+            return;
         }
 
-        filterChain.doFilter(request, response);
+
     }
 
     private boolean shouldSkipFilter(String requestPath) {
         return requestPath.startsWith("/oauth2/") ||
                 requestPath.startsWith("/html/") ||
-                //requestPath.startsWith("/html/login-register.html") ||
+
+                requestPath.startsWith("/products/") ||
+                requestPath.startsWith("/sale/") ||
+                requestPath.startsWith("/users/") ||
+                requestPath.startsWith("/cart/") ||
+                requestPath.startsWith("/item-cart/") ||
+                requestPath.startsWith("/sale-details/") ||
+                requestPath.startsWith("/auth/") ||
+                requestPath.startsWith("/uploads/") ||
+
+
                 requestPath.equals("/") ||
                 requestPath.startsWith("/css/") ||
                 requestPath.startsWith("/js/") ||
@@ -82,6 +112,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("token".equals(cookie.getName())) {
+                    System.out.println(cookie.getValue());
                     return cookie.getValue();
                 }
             }

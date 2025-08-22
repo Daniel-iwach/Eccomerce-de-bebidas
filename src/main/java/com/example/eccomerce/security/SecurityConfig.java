@@ -3,6 +3,7 @@ package com.example.eccomerce.security;
 import com.example.eccomerce.security.filter.JwtTokenValidator;
 import com.example.eccomerce.security.jwt.JwtUtils;
 import com.example.eccomerce.service.impl.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,13 +67,12 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
-                            "http://localhost:8080/**",
-                            "/product/getAll",
-//                            "/users/**",
-//                            "/cart/**",
-//                            "/item-cart/**",
-//                            "/sale/**",
-//                            "/sale-details/**",
+                            "/products/**",
+                            "/users/**",
+                            "/cart/**",
+                            "/item-cart/**",
+                            "/sale/**",
+                            "/sale-details/**",
                             "/auth/**",
                             "/uploads/**",
                             "/recuperar-contraseña/**",
@@ -99,6 +99,16 @@ public class SecurityConfig {
 //                    .loginPage("/html/login-register.html")
 //                    .loginProcessingUrl("/html/login-register.html")
 //            )
+
+            .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    })
+                    .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                    })
+            )
+
             .sessionManagement(sesison->sesison.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
             .build();
