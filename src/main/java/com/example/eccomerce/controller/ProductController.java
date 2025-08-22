@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -41,7 +41,7 @@ public class ProductController {
 
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get-all")
     public ResponseEntity<List<ResponseProductDto>>getAll(){
         return new ResponseEntity<>(productService.listAll(),HttpStatus.OK);
     }

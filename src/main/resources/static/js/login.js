@@ -369,11 +369,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             }else{
                 document.getElementById('loginError').classList.remove('show');
                 document.getElementById('loginSuccess').classList.add('show');
+                let user = await getUserByEmail();
+                let cart = await getCartByUserId(user.id);
+
+                localStorage.setItem('userId', user.id);
+                localStorage.setItem('cartId', cart.id);
                 setTimeout(async() => {
-                    let user = await getUserByEmail();
-                    let cart = await getCartByUserId(user.id);
-                    localStorage.setItem('userId', user.id);
-                    localStorage.setItem('cartId', cart.id);
                     window.location.href = '../html/index.html';
                 }, 2000);
             }
