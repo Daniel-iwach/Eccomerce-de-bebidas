@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -27,13 +28,13 @@ public class ProductController {
 //        return new ResponseEntity<>(productService.create(createProductDto), HttpStatus.OK);
 //    }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> crearProducto(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("brand") String brand,
-            @RequestParam("price") int price,
+            @RequestParam("price") BigDecimal price,
             @RequestParam("category") ECategory category,
             @RequestParam("file") MultipartFile file
     ) throws IOException {

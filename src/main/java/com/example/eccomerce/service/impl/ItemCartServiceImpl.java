@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -160,7 +161,7 @@ public class ItemCartServiceImpl implements IItemCartService {
 
     private ItemCart calculateAndSetSubTotal(ItemCart itemCart){
         ResponseProductDto productDto=productService.findById(itemCart.getProductId().toHexString());
-        itemCart.setSubTotal(productDto.price()*itemCart.getQuantity());
+        itemCart.setSubTotal(productDto.price().multiply(BigDecimal.valueOf(itemCart.getQuantity())));
         return itemCart;
     }
 

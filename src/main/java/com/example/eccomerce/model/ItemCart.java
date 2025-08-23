@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+
 @Document(collection = "ItemsCart")
 @Data
 @AllArgsConstructor
@@ -23,5 +25,5 @@ public class ItemCart {
 
     private int quantity;
 
-    private int subTotal;
+    private BigDecimal subTotal;
 }
