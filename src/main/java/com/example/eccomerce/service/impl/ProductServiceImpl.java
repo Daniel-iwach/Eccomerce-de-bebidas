@@ -43,11 +43,24 @@ public class ProductServiceImpl implements IProductService {
         return productMapper.ProductToProductDto(product);
     }
 
+    @Override
+    public String changeStateById(String productId) {
+        Product product= productRepository.findById(productId)
+                .orElseThrow(()-> new NoSuchElementException("product by id: "+ productId +" not found"));
+        if (product.getState().equals(EProductState.ACTIVADO)){
+            product.setState(EProductState.DESACTIVADO);
+        }else {
+            product.setState(EProductState.ACTIVADO);
+        }
+        productRepository.save(product);
+        return "estado actualizado";
+    }
+
 
     @Override
-    public ResponseProductDto findById(String produdctId) {
-        Product product= productRepository.findById(produdctId)
-                .orElseThrow(()-> new NoSuchElementException("product by id: "+ produdctId +" not found"));
+    public ResponseProductDto findById(String productId) {
+        Product product= productRepository.findById(productId)
+                .orElseThrow(()-> new NoSuchElementException("product by id: "+ productId +" not found"));
         return productMapper.ProductToProductDto(product);
     }
 

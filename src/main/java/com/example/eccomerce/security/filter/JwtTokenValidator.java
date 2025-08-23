@@ -90,7 +90,8 @@ public class JwtTokenValidator extends OncePerRequestFilter {
         return requestPath.startsWith("/oauth2/") ||
                 requestPath.startsWith("/html/") ||
 
-                requestPath.startsWith("/products/") ||
+                requestPath.startsWith("/products/get-all") ||
+                requestPath.startsWith("/products") ||
                 requestPath.startsWith("/sale/") ||
                 requestPath.startsWith("/users/") ||
                 requestPath.startsWith("/cart/") ||
@@ -98,6 +99,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 requestPath.startsWith("/sale-details/") ||
                 requestPath.startsWith("/auth/") ||
                 requestPath.startsWith("/uploads/") ||
+
 
 
                 requestPath.equals("/") ||

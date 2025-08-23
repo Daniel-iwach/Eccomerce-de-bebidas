@@ -51,4 +51,9 @@ public class ProductController {
     public ResponseEntity<ResponseProductDto>getById(@PathVariable String productId){
         return new ResponseEntity<>(productService.findById(productId),HttpStatus.OK);
     }
+
+    @PutMapping("/change-state/{productId}")
+    public ResponseEntity<String> changeStateById(@PathVariable String productId){
+        return new ResponseEntity<>(productService.changeStateById(productId),HttpStatus.OK);
+    }
 }
