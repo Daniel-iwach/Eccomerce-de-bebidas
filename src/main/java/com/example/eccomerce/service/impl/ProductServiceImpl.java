@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,7 +31,7 @@ public class ProductServiceImpl implements IProductService {
     private final ProductMapper productMapper;
 
     @Override
-    public ResponseProductDto createProduct(String name, String description, String brand, int price, ECategory category, MultipartFile file) throws IOException {
+    public ResponseProductDto createProduct(String name, String description, String brand, BigDecimal price, ECategory category, MultipartFile file) throws IOException {
         //GUARDA LA FOTO Y OBTIENE LA URL
         String imageUrl = savePicture(file);
 
