@@ -173,7 +173,6 @@ public class SaleServiceImpl implements ISaleService {
 
 
             ResponseSaleSummaryDto response= getBalanceBetweenDates(new RequestFindByDateTime(firstDay,lastDay));
-            System.out.println(response);
             if (response==null){
                 income="0";
             }else {

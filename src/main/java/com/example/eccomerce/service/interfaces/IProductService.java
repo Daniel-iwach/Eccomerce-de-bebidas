@@ -16,6 +16,8 @@ public interface IProductService {
 
     //ResponseProductDto create(RequestProductCreateDto user);
 
+    String changeStateById(String productId);
+
     ResponseProductDto findById(String produdctId);
 
     List<ResponseProductDto> listAll();
