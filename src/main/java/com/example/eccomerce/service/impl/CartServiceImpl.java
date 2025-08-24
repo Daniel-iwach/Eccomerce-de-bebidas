@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,7 +30,7 @@ public class CartServiceImpl implements ICartService {
     private final MongoTemplate mongoTemplate;
 
     public ResponseCartDto createCart (String userId){
-        Cart cart= new Cart(null,new ObjectId(userId),new ArrayList<String>(),0);
+        Cart cart= new Cart(null,new ObjectId(userId),new ArrayList<String>(), BigDecimal.valueOf(0));
         cart=cartRepository.save(cart);
         return cartMapper.cartToResponseCartDto(cart);
     }
@@ -49,7 +50,7 @@ public class CartServiceImpl implements ICartService {
     }
 
     @Override
-    public ResponseCartDto updateTotalPrice(String cartId, int total) {
+    public ResponseCartDto updateTotalPrice(String cartId, BigDecimal total) {
         Cart cart=cartRepository.findById(cartId)
                 .orElseThrow(()->new NoSuchElementException("Cart with Id: "+cartId+" not found"));
         cart.setTotal(total);
@@ -77,7 +78,7 @@ public class CartServiceImpl implements ICartService {
         Cart cart=cartRepository.findById(cartId)
                 .orElseThrow(()->new NoSuchElementException("Cart with Id: "+cartId+" not found"));
         cart.setItemCartList(new ArrayList<>());
-        cart.setTotal(0);
+        cart.setTotal(BigDecimal.valueOf(0));
         cart=cartRepository.save(cart);
         return cartMapper.cartToResponseCartDto(cart);
     }

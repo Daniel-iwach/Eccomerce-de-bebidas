@@ -3,14 +3,14 @@ package com.example.eccomerce.service.impl;
 import com.example.eccomerce.mappers.SaleMapper;
 import com.example.eccomerce.model.Sale;
 
-import com.example.eccomerce.model.dtos.response.ResponseAnnualStatisticsDto;
-import com.example.eccomerce.model.dtos.response.ResponseSaleSummaryDto;
+import com.example.eccomerce.model.dtos.request.RequestCreatePayDto;
+import com.example.eccomerce.model.dtos.response.*;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
 import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
-import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
 import com.example.eccomerce.model.enums.ESaleState;
 import com.example.eccomerce.repository.SaleRepository;
 import com.example.eccomerce.service.interfaces.ICartService;
+import com.example.eccomerce.service.interfaces.IPayService;
 import com.example.eccomerce.service.interfaces.ISaleDetailsService;
 import com.example.eccomerce.service.interfaces.ISaleService;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +29,19 @@ public class SaleServiceImpl implements ISaleService {
     private final SaleMapper saleMapper;
     private final ICartService cartService;
     private final ISaleDetailsService saleDetailsService;
+    private final IPayService payService;
 
     @Override
     public ResponseSaleDto createSale(RequestCreateSaleDto createSaleDto) {
         Sale sale= saleMapper.createSaleToSale(createSaleDto);
         sale.setState(ESaleState.PENDIENTE);
-        sale.setPayId(new ObjectId());
         sale.setDateTime(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")).toLocalDateTime());
+        sale.setPayId(new ObjectId());
+        sale=saleRepository.save(sale);
+
+        ResponsePayDto payDto= payService.createPay(new RequestCreatePayDto(new ObjectId(sale.getId()),sale.getTotal()));
+        sale.setPayId(new ObjectId(payDto.id()));
+
         sale=saleRepository.save(sale);
         System.out.println(sale);
 
@@ -182,6 +188,30 @@ public class SaleServiceImpl implements ISaleService {
             annualStatistics.getIncomeList().add(income);
         }
         return annualStatistics;
+    }
+
+    @Override
+    public List<SaleReportDTO> findSalesReportOfMonth() {
+        LocalDate now = LocalDate.now();
+
+        // Último día = hoy a las 23:59:59
+        LocalDateTime lastDay = now.atTime(LocalTime.MAX);
+
+        // Primer día = 30 días antes a las 00:00
+        LocalDateTime firstDay = now.minusDays(30).atStartOfDay();
+        return saleRepository.findSalesReportBetweenDates(firstDay,lastDay);
+    }
+
+    @Override
+    public List<SaleReportDTO> findSalesReportOfWeek() {
+        LocalDate now = LocalDate.now();
+
+        // Último día = hoy a las 23:59:59
+        LocalDateTime lastDay = now.atTime(LocalTime.MAX);
+
+        // Primer día = 30 días antes a las 00:00
+        LocalDateTime firstDay = now.minusDays(7).atStartOfDay();
+        return saleRepository.findSalesReportBetweenDates(firstDay,lastDay);
     }
 
 

@@ -30,7 +30,7 @@ public class ProductController {
 
 //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> crearProducto(
+    public ResponseEntity<?> createProduct(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("brand") String brand,
@@ -38,8 +38,37 @@ public class ProductController {
             @RequestParam("category") ECategory category,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        return new ResponseEntity<>(productService.createProduct(name, description, brand, price, category, file),HttpStatus.OK);
+        if (name == null || name.isBlank()) {
+            return ResponseEntity.badRequest().body("El nombre es obligatorio");
+        }
+        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+            return ResponseEntity.badRequest().body("El precio debe ser mayor a 0");
+        }
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Debe subir una imagen");
+        }
 
+        return new ResponseEntity<>(productService.createProduct(name, description, brand, price, category, file),HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProduct(
+            @RequestParam("id") String id,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("brand") String brand,
+            @RequestParam("newStock")Integer newStock,
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("category") ECategory category,
+            @RequestParam(value = "file", required = false) MultipartFile file
+    ) throws IOException {
+        if (name == null || name.isBlank()) {
+            return ResponseEntity.badRequest().body("El nombre es obligatorio");
+        }
+        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+            return ResponseEntity.badRequest().body("El precio debe ser mayor a 0");
+        }
+        return new ResponseEntity<>(productService.updateProduct(id, name, description, brand, newStock, price, category, file),HttpStatus.OK);
     }
 
     @GetMapping("/get-all")
@@ -56,5 +85,15 @@ public class ProductController {
     @PutMapping("/change-state/{productId}")
     public ResponseEntity<String> changeStateById(@PathVariable String productId){
         return new ResponseEntity<>(productService.changeStateById(productId),HttpStatus.OK);
+    }
+
+    @GetMapping("/count-by-stock/{stock}")
+    public ResponseEntity<Integer> countByStock(@PathVariable int stock){
+        return new ResponseEntity<>(productService.countByStock(stock),HttpStatus.OK);
+    }
+
+    @GetMapping("/count-by-stock-less-than/{stock}")
+    public ResponseEntity<Integer> countByStockLessThan(@PathVariable int stock){
+        return new ResponseEntity<>(productService.countByStockLessThan(stock),HttpStatus.OK);
     }
 }

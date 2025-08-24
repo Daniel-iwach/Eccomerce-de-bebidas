@@ -6,8 +6,10 @@ import com.example.eccomerce.model.dtos.response.ResponseSaleSummaryDto;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
 import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
+import com.example.eccomerce.model.dtos.response.SaleReportDTO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,5 +29,9 @@ public interface ISaleService {
     ResponseSaleSummaryDto getBalanceOfAge();
 
     ResponseAnnualStatisticsDto getAnnualStatistics(boolean current);
+
+    List<SaleReportDTO> findSalesReportOfMonth();
+
+    public List<SaleReportDTO> findSalesReportOfWeek();
 
 }

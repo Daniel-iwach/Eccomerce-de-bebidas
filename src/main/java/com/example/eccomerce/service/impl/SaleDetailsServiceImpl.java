@@ -4,6 +4,7 @@ import com.example.eccomerce.mappers.SaleDetailsMapper;
 import com.example.eccomerce.model.SaleDetails;
 import com.example.eccomerce.model.dtos.response.ResponseItemCartDto;
 import com.example.eccomerce.model.dtos.response.ResponseMostSoldProductDto;
+import com.example.eccomerce.model.dtos.response.ResponseSaleDetailsDto;
 import com.example.eccomerce.repository.SaleDetailsRepository;
 import com.example.eccomerce.service.interfaces.IItemCartService;
 import com.example.eccomerce.service.interfaces.ISaleDetailsService;
@@ -53,6 +54,11 @@ public class SaleDetailsServiceImpl implements ISaleDetailsService {
     @Override
     public List<ResponseMostSoldProductDto> findLeastSoldProduct() {
         return saleDetailsRepository.findLeastSoldProduct();
+    }
+
+    @Override
+    public List<ResponseSaleDetailsDto> findDetailsWithProductNameBySaleId(String saleId) {
+        return saleDetailsRepository.findDetailsWithProductNameBySaleId(new ObjectId(saleId));
     }
 }
 

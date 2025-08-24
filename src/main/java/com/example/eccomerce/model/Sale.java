@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Sale {
     private String id;
     private ObjectId userId;
     private ObjectId payId;
-    private Integer total;
+    private BigDecimal total;
     private LocalDateTime dateTime;
     private List<String> saleDetailsList;
     private ESaleState state;
