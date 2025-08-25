@@ -15,8 +15,9 @@ public interface SaleRepository extends MongoRepository<Sale,String> {
     List<Sale> findByDateTimeBetween(LocalDateTime start, LocalDateTime end);
 
     @Aggregation(pipeline = {
-            "{ $match: { state: 'PENDIENTE', dateTime: { $gte: ?#{[0]}, $lte: ?#{[1]} } } }",
-            "{ $group: { _id: null, totalSales: { $sum: 1 }, totalIncome: { $sum: \"$total\" } } }"
+            "{ $match: {dateTime: { $gte: ?#{[0]}, $lte: ?#{[1]} } } }",
+            "{ $addFields: { totalAsDecimal: { $toDecimal: \"$total\" } } }",
+            "{ $group: { _id: null, totalSales: { $sum: 1 }, totalIncome: { $sum: \"$totalAsDecimal\" } } }"
     })
     ResponseSaleSummaryDto getSalesSummary(LocalDateTime starTime, LocalDateTime endTime);
 

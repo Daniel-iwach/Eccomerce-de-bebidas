@@ -8,6 +8,7 @@ import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
 import com.example.eccomerce.model.dtos.response.SaleReportDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,5 +34,7 @@ public interface ISaleService {
     List<SaleReportDTO> findSalesReportOfMonth();
 
     public List<SaleReportDTO> findSalesReportOfWeek();
+
+    String changeStateById(String saleId);
 
 }

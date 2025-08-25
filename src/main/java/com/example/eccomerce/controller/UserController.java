@@ -22,7 +22,7 @@ import java.util.List;
 public class UserController {
     private final IUserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get-all")
     public ResponseEntity<List<ResponseUserDto>> getAll() {
         return new ResponseEntity<>(userService.listAll(), HttpStatus.OK);
@@ -50,5 +50,10 @@ public class UserController {
     @GetMapping("/get-by-email/{email}")
     public ResponseEntity<ResponseUserDto> getUserByEmail(@PathVariable String email) {
         return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
+    }
+
+    @PutMapping("/change-state/{userId}")
+    public ResponseEntity<String>changeStateById(@PathVariable String userId){
+        return new ResponseEntity<>(userService.changeStateById(userId),HttpStatus.OK);
     }
 }

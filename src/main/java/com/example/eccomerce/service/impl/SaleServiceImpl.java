@@ -21,6 +21,7 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -116,7 +117,11 @@ public class SaleServiceImpl implements ISaleService {
         }
         ResponseSaleSummaryDto saleSummary=saleRepository.
                 getSalesSummary(request.start(),request.end());
-        return saleSummary;
+        if (saleSummary==null){
+            return new ResponseSaleSummaryDto(0,0);
+        }else {
+            return saleSummary;
+        }
     }
 
     @Override
@@ -209,9 +214,22 @@ public class SaleServiceImpl implements ISaleService {
         // Último día = hoy a las 23:59:59
         LocalDateTime lastDay = now.atTime(LocalTime.MAX);
 
-        // Primer día = 30 días antes a las 00:00
+        // Primer día = 7 días antes a las 00:00
         LocalDateTime firstDay = now.minusDays(7).atStartOfDay();
         return saleRepository.findSalesReportBetweenDates(firstDay,lastDay);
+    }
+
+    @Override
+    public String changeStateById(String saleId) {
+        Sale sale=saleRepository.findById(saleId)
+                .orElseThrow(()-> new NoSuchElementException("sale with id: "+saleId+ " not found"));
+        if (sale.getState().equals(ESaleState.PENDIENTE)){
+            sale.setState(ESaleState.FINALIZADA);
+        }else {
+            sale.setState(ESaleState.PENDIENTE);
+        }
+        saleRepository.save(sale);
+        return "estado cambiado con exito";
     }
 
 

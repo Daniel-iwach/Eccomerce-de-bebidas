@@ -104,5 +104,10 @@ public class SaleController {
         return new ResponseEntity<>(saleService.findSalesReportOfWeek(),HttpStatus.OK);
     }
 
+    @PutMapping("/change-state/{saleId}")
+    public ResponseEntity<String>changeStateById(@PathVariable String saleId){
+        return new ResponseEntity<>(saleService.changeStateById(saleId),HttpStatus.OK);
+    }
+
 
 }
