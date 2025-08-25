@@ -87,12 +87,27 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResponseUserDto findById(String id) {
-        return null;
+        return userMapper.userEntityToUserDto(userRepository.findById(id)
+                .orElseThrow(()->new NoSuchElementException("user with id: "+id+" not found")));
     }
 
     @Override
     public ResponseUserDto findByEmail(String email) {
         return userMapper.userEntityToUserDto(userRepository.findByEmail(email)
                 .orElseThrow(()->new NoSuchElementException("user with email: "+email+" not found")));
+    }
+
+    @Override
+    public String changeStateById(String userId) {
+        UserEntity user=userRepository.findById(userId)
+                .orElseThrow(()->new NoSuchElementException("user with id: "+userId+" not found"));
+        if (user.getState().equals(EUserState.ACTIVADO)){
+            user.setState(EUserState.DESACTIVADO);
+        }else {
+            user.setState(EUserState.ACTIVADO);
+        }
+        userRepository.save(user);
+        return "Estado actualizado";
+
     }
 }

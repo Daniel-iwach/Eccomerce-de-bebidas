@@ -6,6 +6,7 @@ import com.example.eccomerce.model.dtos.response.ResponseUserDto;
 import com.example.eccomerce.model.enums.EUserState;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface IUserService {
     ResponseUserDto findById(String id);
 
     ResponseUserDto findByEmail(String email);
+
+    String changeStateById(@PathVariable String userId);
 }
