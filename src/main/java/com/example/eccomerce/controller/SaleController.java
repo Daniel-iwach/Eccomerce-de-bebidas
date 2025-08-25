@@ -5,6 +5,7 @@ import com.example.eccomerce.model.dtos.response.ResponseSaleSummaryDto;
 import com.example.eccomerce.model.dtos.request.RequestCreateSaleDto;
 import com.example.eccomerce.model.dtos.request.RequestFindByDateTime;
 import com.example.eccomerce.model.dtos.response.ResponseSaleDto;
+import com.example.eccomerce.model.dtos.response.SaleReportDTO;
 import com.example.eccomerce.service.interfaces.ISaleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -41,23 +43,23 @@ public class SaleController {
         return new ResponseEntity<>(saleService.findByDateTime(request),HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/sales-of-week")
-    public ResponseEntity<List<ResponseSaleDto>>findSalesOfWeek(){
-        return new ResponseEntity<>(saleService.findSalesOfWeek(),HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/sales-of-month")
-    public ResponseEntity<List<ResponseSaleDto>>findSalesOfMonth(){
-        return new ResponseEntity<>(saleService.findSalesOfMonth(),HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/sales-of-year")
-    public ResponseEntity<List<ResponseSaleDto>>findSalesOfAge(){
-        return new ResponseEntity<>(saleService.findSalesOfAge(),HttpStatus.OK);
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("/sales-of-week")
+//    public ResponseEntity<List<ResponseSaleDto>>findSalesOfWeek(){
+//        return new ResponseEntity<>(saleService.findSalesOfWeek(),HttpStatus.OK);
+//    }
+//
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("/sales-of-month")
+//    public ResponseEntity<List<ResponseSaleDto>>findSalesOfMonth(){
+//        return new ResponseEntity<>(saleService.findSalesOfMonth(),HttpStatus.OK);
+//    }
+//
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("/sales-of-year")
+//    public ResponseEntity<List<ResponseSaleDto>>findSalesOfAge(){
+//        return new ResponseEntity<>(saleService.findSalesOfAge(),HttpStatus.OK);
+//    }
 
 
 
@@ -90,6 +92,16 @@ public class SaleController {
     @GetMapping("/get-balance-of-year")
     public ResponseEntity<ResponseSaleSummaryDto> getBalanceOfAge(){
         return new ResponseEntity<>(saleService.getBalanceOfAge(),HttpStatus.OK);
+    }
+
+    @GetMapping("/get-reports-month")
+    public ResponseEntity<List<SaleReportDTO>> findSalesOfMonth(){
+        return new ResponseEntity<>(saleService.findSalesReportOfMonth(),HttpStatus.OK);
+    }
+
+    @GetMapping("/get-reports-week")
+    public ResponseEntity<List<SaleReportDTO>> findSalesOfWeek(){
+        return new ResponseEntity<>(saleService.findSalesReportOfWeek(),HttpStatus.OK);
     }
 
 

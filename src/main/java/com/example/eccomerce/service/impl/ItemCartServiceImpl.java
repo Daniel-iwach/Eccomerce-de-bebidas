@@ -167,7 +167,9 @@ public class ItemCartServiceImpl implements IItemCartService {
 
     private void updateTotalCart(String cartId){
         List<ResponseItemCartDto>itemCartDtoList=getByCartId(cartId);
-        int total=itemCartDtoList.stream().mapToInt(ResponseItemCartDto::subTotal).sum();
+        BigDecimal total = itemCartDtoList.stream()
+                .map(ResponseItemCartDto::subTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         cartService.updateTotalPrice(cartId, total);
     }
 

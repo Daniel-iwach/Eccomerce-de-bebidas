@@ -22,6 +22,5 @@ public class Pay {
     private String method;
     private BigDecimal amount;
     private LocalDateTime creationDate;
-    private LocalDateTime updateDate;
 
 }

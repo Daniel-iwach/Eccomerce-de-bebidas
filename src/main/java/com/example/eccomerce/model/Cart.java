@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Document(collection = "carts")
@@ -22,5 +23,5 @@ public class Cart {
     private ObjectId userId;
     private List<String> itemCartList;
     @NotNull
-    private int total;
+    private BigDecimal total;
 }

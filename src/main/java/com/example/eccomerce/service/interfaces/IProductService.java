@@ -15,6 +15,9 @@ public interface IProductService {
     ResponseProductDto createProduct(String name, String description, String brand,
                                      BigDecimal price, ECategory category, MultipartFile file) throws IOException;
 
+    ResponseProductDto updateProduct(String id,String name, String description, String brand, Integer newStock,
+                                     BigDecimal price, ECategory category, MultipartFile file) throws IOException;
+
     //ResponseProductDto create(RequestProductCreateDto user);
 
     String changeStateById(String productId);
@@ -22,4 +25,8 @@ public interface IProductService {
     ResponseProductDto findById(String produdctId);
 
     List<ResponseProductDto> listAll();
+
+    Integer countByStock(int stock);
+
+    Integer countByStockLessThan(int stock);
 }
